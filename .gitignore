@@ -73,9 +73,6 @@ crashlytics-build.properties
 
 *.meta
 *.asset
-Assets/Plugins
-Assets/Scenes
-Assets/Settings
-Packages
-ProjectSettings
-!*.cs
+*
+!*/
+!Assets/Scripts/**/*.cs
