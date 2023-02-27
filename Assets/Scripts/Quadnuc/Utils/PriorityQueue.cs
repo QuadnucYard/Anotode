@@ -7,6 +7,12 @@ using System.Linq;
 
 #nullable enable
 namespace Quadnuc.Utils {
+
+	/// <summary>
+	/// The less the priority, the first they come.
+	/// </summary>
+	/// <typeparam name="TElement"></typeparam>
+	/// <typeparam name="TPriority"></typeparam>
 	public class PriorityQueue<TElement, TPriority> {
 		private const int DefaultCapacity = 4;
 
@@ -61,6 +67,8 @@ namespace Quadnuc.Utils {
 
 		public int Count => _count;
 		public IComparer<TPriority> Comparer => _priorityComparer;
+
+		public bool Empty => _count == 0;
 
 		public void Enqueue(TElement element, TPriority priority) {
 			_version++;
@@ -186,7 +194,7 @@ namespace Quadnuc.Utils {
 		public class UnorderedItemsCollection : IReadOnlyCollection<(TElement Element, TPriority Priority)>, ICollection {
 			private readonly PriorityQueue<TElement, TPriority> _priorityQueue;
 
-			internal UnorderedItemsCollection(PriorityQueue<TElement, TPriority> priorityQueue) {
+			public UnorderedItemsCollection(PriorityQueue<TElement, TPriority> priorityQueue) {
 				_priorityQueue = priorityQueue;
 			}
 
@@ -227,7 +235,7 @@ namespace Quadnuc.Utils {
 				private int _index;
 				private (TElement Element, TPriority Priority) _current;
 
-				internal Enumerator(PriorityQueue<TElement, TPriority> queue) {
+				public Enumerator(PriorityQueue<TElement, TPriority> queue) {
 					_version = queue._version;
 					_queue = queue;
 					_index = 0;
