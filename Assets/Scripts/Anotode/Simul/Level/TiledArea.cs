@@ -1,33 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Anotode.Models.Map;
 using Quadnuc.Utils;
+using Mathf = UnityEngine.Mathf;
+using Vector2 = UnityEngine.Vector2;
+using Vector2Int = UnityEngine.Vector2Int;
 
 namespace Anotode.Simul.Level {
 
-	/// <summary>
-	/// 用于渲染pass和cost
-	/// </summary>
-	public class TiledAreaFrame {
-
-		public readonly TiledArea area;
-		public readonly TilePassFlag[,] passMap;
-		public readonly int[,] costMap;
-
-		public int xGrid => area.areaModel.xGrid;
-		public int yGrid => area.areaModel.yGrid;
-
-		public TiledAreaFrame(TiledArea area) {
-			this.area = area;
-			passMap = area.areaModel.tiles.Map(t => t.type == TileType.Land ? TilePassFlag.Land : TilePassFlag.None);
-			costMap = area.areaModel.tiles.Like<TileInfo, int>();
-		}
-	}
-
 	public class TiledArea {
+
+		public GameMap map;
 
 		public readonly TiledAreaModel areaModel;
 		public readonly TiledAreaFrame frame;
@@ -38,7 +20,17 @@ namespace Anotode.Simul.Level {
 		}
 
 		public void UpdateFrame() {
-
+			frame.ClearCostMap();
+			// 定义自然一些，charm为正表示吸引。
+			static int charmFunc(int a, float d) => -Mathf.FloorToInt(a / (d * d + 1));
+			foreach (var enemy in map.areaEnemies[this]) {
+				var pos = enemy.localPos;
+				for (int i = 0; i < areaModel.xGrid; i++) {
+					for (int j = 0; j < areaModel.yGrid; j++) {
+						frame.costMap[i, j] += charmFunc(enemy.enemyModel.charm, Mathh.Hypot(i + 0.5f - pos.x, j + 0.5f - pos.y));
+					}
+				}
+			}
 		}
 
 	}

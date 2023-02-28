@@ -1,5 +1,6 @@
 ﻿using System;
 using Vector2 = UnityEngine.Vector2;
+using Vector2Int = UnityEngine.Vector2Int;
 
 namespace Anotode.Models.Map {
 
@@ -12,6 +13,9 @@ namespace Anotode.Models.Map {
 
 		/// <summary> Tiles stored in (x, y) order. </summary>
 		public TileInfo[,] tiles;
+
+		public Vector2Int[] entrances;
+		public Vector2Int[] exits;
 
 		public int xGrid => tiles.GetLength(0);
 		public int yGrid => tiles.GetLength(1);

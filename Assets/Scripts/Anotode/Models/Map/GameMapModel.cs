@@ -7,6 +7,7 @@ namespace Anotode.Models.Map {
 
 		public TiledAreaModel[] tiledAreas;
 
+
 		public override Model Clone() {
 			throw new NotImplementedException();
 		}

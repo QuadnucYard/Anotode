@@ -4,7 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Anotode.Unity.Bridge {
-	public class EnemyController {
+namespace Anotode.Simul.Objects {
+	public class Simulatable {
+
+		public Simulation sim;
+
 	}
 }

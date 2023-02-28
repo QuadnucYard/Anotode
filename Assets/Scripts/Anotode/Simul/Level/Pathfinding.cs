@@ -12,16 +12,30 @@ namespace Anotode.Simul.Level {
 		Floor, Air, Water, Check,
 	}
 
+	// TODO: area和坐标的关系
 	public class Pathfinding {
 
 		private static readonly Vector2Int[] directions = new Vector2Int[] { Vector2Int.right, Vector2Int.up, Vector2Int.left, Vector2Int.down };
-		private const int maxTry = 1000;
+		private const int maxTry = 10000;
 
-		public Path find(TiledAreaFrame area, Vector2Int pStart, Vector2Int pEnd, TilePassFlag passFlag) {
+		public Path Find(Vector2 pStart, GameMap.PositionInArea[] pExits, TilePassFlag passFlag) {
+			Path bestPath = null;
+			foreach (var pa in pExits) {
+				var path = Find(pa.area.frame, pStart.FloorToInt(), pa.pos, passFlag);
+				if (bestPath == null || path?.cost < bestPath.cost) bestPath = path;
+			}
+			return bestPath;
+		}
+
+		public Path Find(TiledAreaFrame area, Vector2 pStart, Vector2 pEnd, TilePassFlag passFlag) {
+			return Find(area, pStart.FloorToInt(), pEnd.FloorToInt(), passFlag);
+		}
+
+		public Path Find(TiledAreaFrame area, Vector2Int pStart, Vector2Int pEnd, TilePassFlag passFlag) {
 			if (pStart == pEnd) {
 				return new Path(new() { pEnd }, 0);
 			}
-			
+
 			PriorityQueue<Node> openSet = new();
 			HashSet<Node> closeSet = new();
 
@@ -71,7 +85,7 @@ namespace Anotode.Simul.Level {
 			List<Vector2> arr = new();
 			int cost = cur.hCost;
 			while (cur.x != startNode.x || cur.y != startNode.y) {
-				arr.Add(cur);
+				arr.Add(new(cur.x + 0.5f, cur.y + 0.5f));
 				cur = cur.parent;
 			}
 			return new(arr, cost);

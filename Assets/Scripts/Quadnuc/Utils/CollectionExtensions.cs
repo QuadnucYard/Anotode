@@ -84,12 +84,11 @@ namespace Quadnuc.Utils {
 			return clone;
 		}
 
-		public static IEnumerable<TDest> TypeFilter<TSource, TDest>(this IEnumerable<TSource> first)
-			where TDest : class {
-			return from t in first
-				   let d = t as TDest
-				   where d != null
-				   select d;
+		public static IEnumerable<T> Reversed<T>(this IList<T> list) {
+			int len = list.Count;
+			for (int i = len - 1; i >= 0; i--) {
+				yield return list[i];
+			}
 		}
 
 		/// <summary>

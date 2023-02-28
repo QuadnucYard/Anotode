@@ -50,5 +50,24 @@ namespace Quadnuc.Utils {
 			return a + (b - a) * (1 - Mathf.Exp(-t));
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static float Hypot(float x, float y) {
+			return Mathf.Sqrt(x * x + y * y);
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static float Hypot(float x, float y, float z) {
+			return Mathf.Sqrt(x * x + y * y + z * z);
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static float Cross(Vector2 a, Vector2 b) {
+			return a.x * b.y - a.y * b.x;
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool IsColinear(Vector2 a, Vector2 b, Vector2 c) {
+			return Mathf.Approximately(Cross(b - a, c - a), 0); 
+		}
 	}
 }

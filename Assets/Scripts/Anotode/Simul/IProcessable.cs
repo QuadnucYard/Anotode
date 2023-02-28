@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Anotode.Unity.Bridge {
-	public class UnityController {
+namespace Anotode.Simul {
+	public interface IProcessable {
+		public void Process(int elapsed);
 	}
 }
