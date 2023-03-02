@@ -13,5 +13,19 @@ namespace Quadnuc.Utils {
 			return first == null || first.Count() == 0;
 		}
 
+		public static T[,] ToArray2D<T>(IEnumerable<IEnumerable<T>> list) {
+			int n = list.Count(), m = list.ElementAt(0).Count();
+			var array = new T[n, m];
+			int i = 0;
+			foreach (var a in list) {
+				int j = 0;
+				foreach (var b in a) {
+					array[i, j++] = b;
+				}
+				i++;
+			}
+			return array;
+		}
+
 	}
 }

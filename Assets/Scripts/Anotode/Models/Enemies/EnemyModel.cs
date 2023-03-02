@@ -8,15 +8,18 @@ namespace Anotode.Models {
 	public class EnemyModel : Model {
 
 		public string id;
-		private float _level;
-		public int hp;
-		public int hpMax; //应该是根据等级算的
-		public float hpRate;
+		public string baseId;
 		public int invasionDamage;
 		public int charm;
 		public float speed;
 		public int population;
+		public float hpFactor;
 		public TilePassFlag passFlag;
+
+		private float _level;
+		public int hp;
+		public int hpMax; //应该是根据等级算的
+		public float hpRate;
 
 		public Vector3 pos; // 暂时当它是全局坐标
 		public float rotation;
