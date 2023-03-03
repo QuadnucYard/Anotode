@@ -15,7 +15,7 @@ namespace Anotode.Data.Enemies {
 		public EnemyModel def => new() {
 			id = id,
 			baseId = baseId,
-			speed = speed,
+			speed = speed * GlobalData.fixedUpdateTime,
 			population = population,
 			charm = charm,
 			hpFactor = hpFactor,

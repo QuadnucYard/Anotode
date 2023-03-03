@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Anotode.Data;
 using Anotode.Display.Bridge;
 using Anotode.Models;
 using Anotode.Models.Map;
@@ -23,60 +24,21 @@ namespace Anotode.Display.UI.InGame {
 
 		private void Awake() {
 			instance = this;
+			sceneCamera = Camera.main;
 		}
 
 		private void Start() {
 			btnStartWave.onClick.AddListener(() => bridge.StartWave());
 		}
 
-		private void OnEnable() {
+		public void StartGame(string levelId) {
 			Simulation sim = new();
+			var level = GameDataManager.getLevel(levelId);
 			sim.Init(new() {
-				enemies = new EnemyModel[] {
-					new() {
-						id = "basic",
-						speed = 1.0f / 60.0f,
-						population = 1,
-						charm = -20,
-						passFlag = TilePassFlag.Land,
-					},
-					new() {
-						id = "strong",
-						speed = 0.5f / 60.0f,
-						population = 2,
-						charm = 50,
-						passFlag = TilePassFlag.Land,
-					},
-					new() {
-						id = "fast",
-						speed = 2.0f / 60.0f,
-						population = 2,
-						charm = -100,
-						passFlag = TilePassFlag.Land,
-					},
-				}
+				enemies = GameDataManager.allEnemies
 			});
 
-			int[,] tileTypes = new int[,] {
-				{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 },
-				{1,1,1,0,1,1,1,1,0,0,0,0,1,0,1 },
-				{1,0,1,0,1,0,0,1,1,1,1,1,1,1,1 },
-				{1,1,1,1,1,0,0,1,1,0,1,1,0,1,1 },
-				{1,0,0,1,1,1,1,1,1,0,1,1,0,1,0 },
-				{1,1,1,1,0,0,1,1,0,0,1,1,1,1,1 },
-				{1,1,0,1,1,1,1,1,1,1,1,1,0,1,1 },
-				{1,1,0,1,0,0,0,0,1,1,1,1,0,0,1 },
-				{1,1,0,1,1,1,1,1,1,0,1,1,0,1,1 },
-				{1,1,1,1,0,0,0,1,1,1,1,1,1,1,1 }, // 15*10
-			}.Transposed();
-
-			TileInfo[,] tiles = tileTypes.Map((t, i, j) => new TileInfo((TileType)tileTypes[i, tileTypes.GetLength(1) - 1 - j]));
-			TiledAreaModel tiledAreaModel = new() {
-				tiles = tiles,
-				entrances = new Vector2Int[] { new(0, 0) },
-				exits = new Vector2Int[] { new(14, 9) },
-			};
-			sim.InitMap(new() { tiledAreas = new TiledAreaModel[] { tiledAreaModel } });
+			sim.InitMap(level.map);
 			map.CreateMap(sim.model.map);
 
 			bridge = new() {

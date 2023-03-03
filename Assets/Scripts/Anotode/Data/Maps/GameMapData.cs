@@ -12,7 +12,7 @@ namespace Anotode.Data.Maps {
 		readonly List<Vector2Int> exits;
 
 		public TiledAreaModel def => new() {
-			tiles = Enumerables.ToArray2D(tiles.Select(t => t.Select(t => new TileInfo() { type = (TileType)t }))),
+			tiles = Enumerables.ToArray2D(tiles.Reversed().Select(t => t.Select(t => new TileInfo() { type = (TileType)t }))).Transposed(),
 			entrances = entrances.ToArray(),
 			exits = exits.ToArray(),
 		};

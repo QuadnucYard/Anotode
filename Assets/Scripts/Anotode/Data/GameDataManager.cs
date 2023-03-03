@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Anotode.Models;
 using Anotode.Models.Map;
 
 namespace Anotode.Data {
@@ -10,6 +11,8 @@ namespace Anotode.Data {
 
 		private static LevelModel[] _allLevels;
 		public static LevelModel[] allLevels => _allLevels ??= GameData.instance.levels.Select(t => t.def).ToArray();
+
+		public static EnemyModel[] allEnemies { get; } = GameData.instance.enemies.Select(t => t.def).ToArray();
 
 		public static LevelModel getLevel(string id) {
 			return allLevels.First(t => t.id == id);
