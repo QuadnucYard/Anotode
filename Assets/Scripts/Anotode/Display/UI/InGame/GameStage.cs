@@ -32,18 +32,32 @@ namespace Anotode.Display.UI.InGame {
 		}
 
 		public void StartGame(string levelId) {
+			// !important 事件的顺序很重要
+
 			Simulation sim = new();
 			var level = GameDataManager.getLevel(levelId);
 			sim.Init(new() {
 				enemies = GameDataManager.allEnemies
 			});
 
-			sim.InitMap(level.map);
+			sim.InitLevel(level);
 			map.CreateMap(sim.model.map);
 
-			bridge = new() {
-				simulation = sim
+			bridge = new();
+			// 初始化委托事件
+			bridge.onWaveStart += r => {
+				Debug.Log(r);
+				btnStartWave.enabled = false;
 			};
+			bridge.onWaveSpawnEnd += r => { 
+				Debug.Log(r);
+				btnStartWave.enabled = true;
+			};
+			bridge.onWaveEnd += r => Debug.Log(r);
+
+			bridge.Init(sim);
+			sim.InitEvents();
+
 			StartCoroutine(GameCycle());
 		}
 

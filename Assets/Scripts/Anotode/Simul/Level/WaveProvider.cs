@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Anotode.Models;
+using Anotode.Models.Map;
 using Anotode.Models.Waves;
 
 namespace Anotode.Simul.Level {
@@ -11,33 +12,31 @@ namespace Anotode.Simul.Level {
 		private readonly WaveModel[] _waves;
 		private readonly EnemyGroupModel _enemyGroup;
 		private int _currentWave;
-		private readonly Random _rng;
+		private Random _rng;
 
-		public WaveProvider(GameModel game, WaveModel[] waves) {
+		public int currentWave => _currentWave;
+
+		public WaveProvider(GameModel game, LevelModel level) {
 			_game = game;
-			_waves = waves;
+			_waves = level.waves;
+			_enemyGroup = level.enemyGroup;
 			_currentWave = 0;
 		}
 
-		public WaveProvider(GameModel game, EnemyGroupModel enemyGroup) {
-			_game = game;
-			_enemyGroup = enemyGroup;
-			_currentWave = -1;
-			_rng = new(); // TODO: Need a seed
-		}
-
 		public bool HasNext() {
-			return _currentWave == -1 || _currentWave < _waves.Length;
+			return _currentWave < _waves?.Length || _enemyGroup != null;
 		}
 
 		public WaveModel NextWave() {
-			// 需要知道GameModel
-			if (_currentWave != -1) {
+			if (_currentWave < _waves?.Length) {
 				return _waves[_currentWave++];
 			}
+
 			int n = _enemyGroup.proportions.Count;
 			var propList = _enemyGroup.proportions.Values.ToList();
 			var enemyList = _enemyGroup.proportions.Keys.Select(t => _game.GetEnemy(t)).ToList();
+
+			_rng = new(_enemyGroup.seed + _currentWave);
 
 			List<string> spawnList = new();
 			for (int pop = _enemyGroup.populationMax; pop > 0;) {
@@ -51,6 +50,7 @@ namespace Anotode.Simul.Level {
 				pop -= enemyList[k].population;
 				spawnList.Add(enemyList[k].id);
 			}
+			_currentWave++;
 			return new() { difficulty = 1.0f, enemyList = spawnList.ToArray() };
 		}
 

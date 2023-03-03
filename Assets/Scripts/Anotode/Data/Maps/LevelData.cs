@@ -1,19 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Anotode.Models.Map;
-using Anotode.Models.Waves;
 
 namespace Anotode.Data.Maps {
-
-	public class EnemyGroupData {
-		readonly int populationMax;
-		readonly Dictionary<string, float> proportions;
-
-		public EnemyGroupModel def => new() {
-			populationMax = populationMax,
-			proportions = proportions,
-		};
-	}
 
 	public class LevelData {
 		readonly string id;

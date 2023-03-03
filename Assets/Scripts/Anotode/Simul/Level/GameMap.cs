@@ -14,8 +14,6 @@ namespace Anotode.Simul.Level {
 		public List<TiledArea> areas;
 		public Pathfinding pathfinding = new();
 
-		public Spawner spawner; // TODO 在哪给sim赋值？
-
 		public PositionInArea[] areaEntrances;
 		public PositionInArea[] areaExits;
 
@@ -33,14 +31,6 @@ namespace Anotode.Simul.Level {
 		public void Init() {
 			areaEntrances = areas.SelectMany(t => t.areaModel.entrances.Map(s => new PositionInArea() { area = t, pos = s })).ToArray();
 			areaExits = areas.SelectMany(t => t.areaModel.exits.Map(s => new PositionInArea() { area = t, pos = s })).ToArray();
-			spawner = new() {
-				sim = sim,
-				spawnJunction = null,
-				waveProvider = new(sim.model, new EnemyGroupModel() {
-					populationMax = 100,
-					proportions = new() { ["basic"] = 0.4f, ["strong"] = 0.7f, ["fast"] = 1.0f }
-				})
-			};
 			areaEnemies = new();
 			foreach (var a in areas) areaEnemies.Add(a, new());
 		}
