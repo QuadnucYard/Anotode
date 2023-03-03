@@ -10,6 +10,5 @@ namespace Anotode.Data {
 		public readonly List<EnemyData> enemies;
 		public readonly List<GameMapData> maps;
 		public readonly List<LevelData> levels;
-
 	}
 }

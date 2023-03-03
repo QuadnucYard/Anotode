@@ -1,4 +1,5 @@
 ﻿using System;
+using Anotode.Models.Waves;
 
 namespace Anotode.Models.Map {
 
@@ -11,7 +12,11 @@ namespace Anotode.Models.Map {
 		public float hardnessB;
 		public float spawnInterval;
 		public int splitRule;
-		public int populationMax;
+
+		public WaveModel[] waves;
+		public EnemyGroupModel enemyGroup;
+
+		public GameMapModel map;
 
 		public override Model Clone() {
 			throw new NotImplementedException();

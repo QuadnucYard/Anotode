@@ -1,6 +1,20 @@
-﻿using Anotode.Models.Map;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Anotode.Models.Map;
+using Anotode.Models.Waves;
 
 namespace Anotode.Data.Maps {
+
+	public class EnemyGroupData {
+		readonly int populationMax;
+		readonly Dictionary<string, float> proportions;
+
+		public EnemyGroupModel def => new() {
+			populationMax = populationMax,
+			proportions = proportions,
+		};
+	}
+
 	public class LevelData {
 		readonly string id;
 		readonly string mapId;
@@ -8,7 +22,9 @@ namespace Anotode.Data.Maps {
 		readonly float hardnessB;
 		readonly float spawnInterval;
 		readonly int splitRule;
-		readonly int populationMax;
+
+		readonly List<WaveData> waves;
+		readonly EnemyGroupData enemyGroup;
 
 		public LevelModel def => new() {
 			id = id,
@@ -17,7 +33,9 @@ namespace Anotode.Data.Maps {
 			hardnessB = hardnessB,
 			spawnInterval = spawnInterval,
 			splitRule = splitRule,
-			populationMax = populationMax
+			waves = waves.Select(t => t.def).ToArray(),
+			enemyGroup = enemyGroup.def,
+			map = GameDataManager.getMap(mapId),
 		};
 	}
 }

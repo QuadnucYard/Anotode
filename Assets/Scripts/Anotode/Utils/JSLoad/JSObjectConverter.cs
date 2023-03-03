@@ -80,7 +80,7 @@ namespace Anotode.Utils.JSLoad {
 
 		public static IDictionary ConvertToDict(Type type, JSObject obj) {
 			var res = (IDictionary)Activator.CreateInstance(type);
-			var gtype = type.GenericTypeArguments[0];
+			var gtype = type.GenericTypeArguments[1];
 			foreach (var e in getEntries(obj)) {
 				res.Add(e.key, GetValue(gtype, e.value));
 			}
