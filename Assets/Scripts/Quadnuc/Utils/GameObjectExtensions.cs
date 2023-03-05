@@ -1,9 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 namespace Quadnuc.Utils {
 	public static class GameObjectExtensions {

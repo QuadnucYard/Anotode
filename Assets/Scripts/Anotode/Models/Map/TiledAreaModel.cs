@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Numerics;
+using Quadnuc.Utils;
 using Vector2 = UnityEngine.Vector2;
 using Vector2Int = UnityEngine.Vector2Int;
 
@@ -26,12 +26,29 @@ namespace Anotode.Models.Map {
 			return MemberwiseClone() as TiledAreaModel;
 		}
 
-		public bool ContainsPoint(Vector2 point) {
-			return point.x >= 0 && point.y >= 0 && point.x < xGrid && point.y < yGrid;
-		}
+		public bool ContainsPoint(Vector2 point) 
+			=> point.x >= 0 && point.y >= 0 && point.x < xGrid && point.y < yGrid;
 
-		public bool ContainsPointGlobal(Vector2 point) {
-			return ContainsPoint(point + pivotPoint - position);
-		}
+		public bool ContainsPointGlobal(Vector2 point) 
+			=> ContainsPoint(point + pivotPoint - position);
+
+		public Vector2 CellToLocal(Vector2Int pos)
+			=> new(pos.x + 0.5f, pos.y + 0.5f);
+
+		public Vector2 LocalToGlobal(Vector2 pos) 
+			=> pos - pivotPoint + position;
+
+		public Vector2Int LocalToCell(Vector2 pos)
+			=> pos.FloorToInt();
+
+		public Vector2 GlobalToLocal(Vector2 pos)
+			=> pos + pivotPoint - position;
+
+		public Vector2 CellToGlobal( Vector2Int pos)
+			=> LocalToGlobal(CellToLocal(pos));
+
+		public Vector2Int GlobalToCell(Vector2 pos)
+			=> LocalToCell(GlobalToLocal(pos));
+
 	}
 }

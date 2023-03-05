@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Quadnuc.Utils;
-
 using Vector2 = UnityEngine.Vector2;
 
 namespace Anotode.Simul.Level {
@@ -10,15 +9,19 @@ namespace Anotode.Simul.Level {
 
 		public readonly List<Vector2> path;
 		public readonly int cost;
+		public readonly TiledArea area;
+		public readonly bool ended;
 
-		public Path(List<Vector2> path = null, int cost = 0) {
-			this.path = path ?? new();
+		public Path(List<Vector2> path, int cost, TiledArea area, bool ended = true) {
+			this.path = path;
 			this.cost = cost;
+			this.area = area;
+			this.ended = ended;
 		}
 
-		public Vector2 this[int index] => path[index];
+		//public Vector2 this[int index] => path[index];
 
-		public int Length => path?.Count > 0 ? path.Count : int.MaxValue;
+		public int Length => path.Count > 0 ? path.Count : int.MaxValue;
 
 		public bool Empty => path.Empty();
 

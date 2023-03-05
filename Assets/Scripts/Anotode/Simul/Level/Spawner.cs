@@ -43,7 +43,7 @@ namespace Anotode.Simul.Level {
 			var model = (EnemyModel)_spawnList.Pop().Clone();
 			model.spawnIndex = _nextSpawnIndex++;
 			Enemy enemy = new(model) { sim = sim, areaIn = area };
-			enemy.enemyModel.pos = (Vector2)area.areaModel.entrances[0] + Vector2.one / 2;
+			enemy.localPos = area.areaModel.entrances[0] + Vector2.one / 2;
 			sim.map.areaEnemies[area].Add(enemy);
 			return enemy;
 		}

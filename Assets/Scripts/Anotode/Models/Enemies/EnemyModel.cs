@@ -11,6 +11,7 @@ namespace Anotode.Models {
 		public string baseId;
 		public int invasionDamage;
 		public int charm;
+		public int charmSelf;
 		public float speed;
 		public int population;
 		public float hpFactor;

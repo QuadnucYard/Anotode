@@ -10,6 +10,7 @@ namespace Anotode.Simul.Level {
 		public readonly TiledArea area;
 		public readonly TilePassFlag[,] passMap;
 		public readonly int[,] costMap;
+		public readonly int[,] charmMap;
 
 		public int xGrid => area.areaModel.xGrid;
 		public int yGrid => area.areaModel.yGrid;
@@ -18,10 +19,12 @@ namespace Anotode.Simul.Level {
 			this.area = area;
 			passMap = area.areaModel.tiles.Map(t => t.type == TileType.Land ? TilePassFlag.Land : TilePassFlag.None);
 			costMap = area.areaModel.tiles.Like<TileModel, int>();
+			charmMap = area.areaModel.tiles.Like<TileModel, int>();
 		}
 
 		public void ClearCostMap() {
 			costMap.Fill(0);
+			charmMap.Fill(0);
 		}
 	}
 }
