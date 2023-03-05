@@ -8,13 +8,20 @@ namespace Anotode.Data.Maps {
 
 	public class AreaData {
 		readonly List<List<int>> tiles;
+
 		readonly List<Vector2Int> entrances;
 		readonly List<Vector2Int> exits;
 
+		readonly Vector2 pivotPoint;
+		readonly Vector2 position;
+
 		public TiledAreaModel def => new() {
-			tiles = Enumerables.ToArray2D(tiles.Reversed().Select(t => t.Select(t => new TileInfo() { type = (TileType)t }))).Transposed(),
+			tiles = Enumerables.ToArray2D(tiles.Reversed()).Transposed()
+				.Map((t, i, j) => (TileModel)GameDataManager.GetTile(t).Clone()),
 			entrances = entrances.ToArray(),
 			exits = exits.ToArray(),
+			pivotPoint = pivotPoint,
+			position = position,
 		};
 	}
 

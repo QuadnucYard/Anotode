@@ -24,6 +24,8 @@ namespace Anotode.Utils.JSLoad {
 
 		private const BindingFlags bindingFlags = BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 
+		private static readonly Dictionary<IntPtr, object> parsedObjects = new();
+
 		internal static void Init(JsEnv vm) {
 			getEntries = vm.ExecuteModule<ObjectEntryGetter>("core/converter.js", "getEntries");
 
@@ -58,6 +60,9 @@ namespace Anotode.Utils.JSLoad {
 		/// <param name="obj"></param>
 		/// <returns></returns>
 		public static object Convert(Type type, JSObject obj) {
+			if (parsedObjects.TryGetValue(obj.getJsObjPtr(), out var value)) {
+				return value;
+			}
 			if (TypeHelper.IsList(type)) {
 				return ConvertToList(type, obj);
 			}
@@ -66,6 +71,7 @@ namespace Anotode.Utils.JSLoad {
 			}
 			var res = Activator.CreateInstance(type);
 			ConvertInplace(type, res, obj);
+			parsedObjects.Add(obj.getJsObjPtr(), res);
 			return res;
 		}
 
@@ -98,6 +104,10 @@ namespace Anotode.Utils.JSLoad {
 				return Enum.ToObject(type, System.Convert.ToInt32(obj));
 			}
 			return System.Convert.ChangeType(obj, type);
+		}
+
+		public static void ClearReferences() {
+			parsedObjects.Clear();
 		}
 
 	}

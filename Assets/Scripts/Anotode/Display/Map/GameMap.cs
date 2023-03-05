@@ -1,5 +1,6 @@
-﻿using Anotode.Models.Map;
-using Quadnuc.Utils;
+﻿using System.Collections.Generic;
+using Anotode.Models.Map;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -7,15 +8,19 @@ namespace Anotode.Display.Map {
 	public class GameMap : MonoBehaviour {
 
 		public GameMapModel mapModel;
-		public Tilemap tilemap;
-		public TileBase tile;
+		public Tile tileTemplate;
 
-		public void CreateMap(GameMapModel mapModel) {
+		public List<TiledArea> areas;
+
+		public async UniTaskVoid CreateMap(GameMapModel mapModel) {
 			this.mapModel = mapModel;
-			var area = mapModel.tiledAreas[0];
-			area.tiles.ForEach((t, i, j) => {
-				if (t.type == TileType.Land) tilemap.SetTile(new(i, j, 0), tile);
-			});
+
+			var areaPrefab = await AssetsManager.LoadAssetAsync<GameObject>("TiledArea");
+			areas = new();
+			foreach (var a in mapModel.tiledAreas) {
+				var area = Instantiate(areaPrefab, transform).GetComponent<TiledArea>();
+				await area.Create(a);
+			}
 		}
 
 	}

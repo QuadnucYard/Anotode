@@ -41,16 +41,16 @@ namespace Anotode.Display.UI.InGame {
 			});
 
 			sim.InitLevel(level);
-			map.CreateMap(sim.model.map);
+			map.CreateMap(sim.model.map).Forget(); // NOTE: 这里没有await
 
 			bridge = new();
 			// 初始化委托事件
 			bridge.onWaveStart += r => {
-				Debug.Log(r);
+				Debug.Log($"Wave start {r}");
 				btnStartWave.enabled = false;
 			};
 			bridge.onWaveSpawnEnd += r => { 
-				Debug.Log(r);
+				Debug.Log($"Wave spawn end {r}");
 				btnStartWave.enabled = true;
 			};
 			bridge.onWaveEnd += r => Debug.Log(r);

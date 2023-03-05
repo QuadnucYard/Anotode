@@ -8,7 +8,6 @@ namespace Anotode.Models.Map {
 		public string id;
 		public TiledAreaModel[] tiledAreas;
 
-
 		public override Model Clone() {
 			throw new NotImplementedException();
 		}

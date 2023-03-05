@@ -17,7 +17,7 @@ namespace Anotode.Simul.Level {
 		public TiledAreaFrame(TiledArea area) {
 			this.area = area;
 			passMap = area.areaModel.tiles.Map(t => t.type == TileType.Land ? TilePassFlag.Land : TilePassFlag.None);
-			costMap = area.areaModel.tiles.Like<TileInfo, int>();
+			costMap = area.areaModel.tiles.Like<TileModel, int>();
 		}
 
 		public void ClearCostMap() {

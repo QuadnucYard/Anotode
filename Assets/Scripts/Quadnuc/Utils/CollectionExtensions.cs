@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 
 namespace Quadnuc.Utils {
@@ -27,6 +24,15 @@ namespace Quadnuc.Utils {
 			T tmp = list[0];
 			list.RemoveAt(0);
 			return tmp;
+		}
+
+		public static int IndexOf<T>(this IEnumerable<T> e, T element) {
+			int i = 0;
+			foreach (var t in e) {
+				if (Equals(t, element)) return i;
+				i++;
+			}
+			return -1;
 		}
 
 		public static int IndexOf<T>(this IEnumerable<T> e, Func<T, bool> pred) {
