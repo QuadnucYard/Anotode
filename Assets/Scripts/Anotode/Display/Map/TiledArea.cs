@@ -26,6 +26,23 @@ namespace Anotode.Display.Map {
 			areaModel.tiles.ForEach((t, i, j) => {
 				tilemap.SetTile(new(i, j, 0), tileAssets[tileIndices.IndexOf(t.index)]);
 			});
+
+			var obj = await AssetsManager.LoadAssetAsync<GameObject>("MapObject");
+			foreach (var p in areaModel.entrances) {
+				var sr = Instantiate(obj, p).GetComponent<SpriteRenderer>();
+
+				sr.sprite = await GameData.instance.others["spawner"].AutoLoad();
+			}
+			foreach (var p in areaModel.exits) {
+				var sr = Instantiate(obj, p).GetComponent<SpriteRenderer>();
+				sr.sprite = await GameData.instance.others["base"].AutoLoad();
+			}
+		}
+
+		private GameObject Instantiate(GameObject original, Vector2Int position) {
+			var obj = Instantiate(original, tilemap.transform, false);
+			obj.transform.localPosition = new(position.x + 0.5f, position.y + 0.5f, 0);
+			return obj;
 		}
 	}
 }

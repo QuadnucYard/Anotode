@@ -11,5 +11,6 @@ namespace Anotode.Data {
 		public readonly List<GameMapData> maps;
 		public readonly List<LevelData> levels;
 		public readonly List<TileData> tiles;
+		public readonly Dictionary<string, SpriteData> others;
 	}
 }
