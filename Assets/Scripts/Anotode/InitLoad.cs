@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Anotode.Data;
+﻿using Anotode.Data;
 using Anotode.Utils.JSLoad;
 using Anotode.Utils.Locale;
 using Quadnuc.Utils;
@@ -12,6 +11,8 @@ namespace Anotode {
 
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 		public static void Init() {
+			Application.runInBackground = true;
+
 			JSDataLoader loader = new(AssetPaths.dataPath.ToString());
 			loader.LoadTo(GameData.instance, "base/data");
 			JSObjectConverter.ClearReferences();

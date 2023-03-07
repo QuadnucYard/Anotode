@@ -3,7 +3,7 @@ using Anotode.Display.UI.Menu;
 using Quadnuc.Utils;
 using UnityEngine.UI;
 
-namespace Assets.Scripts.Anotode.Display.UI.Main {
+namespace Anotode.Display.UI.Main {
 	public class MainMenu : GameMenu {
 
 		public LevelSelectScreen levelSelectScreen;

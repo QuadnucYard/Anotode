@@ -44,7 +44,7 @@ namespace Anotode.Simul {
 
 		public void Simulate() {
 			spawner.Process();
-			map.areas.ForEach(t => t.UpdateFrame());
+			map.areas.ForEach(t => t.Process());
 			map.areaEnemies.ForEach(t => t.Value.ForEach(t => t.Process()));
 			map.areaEnemies.ForEach(t => t.Value.RemoveAll(t => t.dead));
 			timer.Update(1); // 需要循环模拟步长次

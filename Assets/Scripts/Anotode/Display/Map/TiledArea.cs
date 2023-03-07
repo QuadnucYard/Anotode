@@ -15,12 +15,12 @@ namespace Anotode.Display.Map {
 		public async UniTask Create(TiledAreaModel areaModel) {
 			this.areaModel = (TiledAreaModel)areaModel.Clone();
 
-			tilemap.transform.position = -areaModel.pivotPoint;
-			transform.position = areaModel.position;
+			tilemap.transform.localPosition = -areaModel.pivotPoint;
+			transform.localPosition = areaModel.position;
 
 			var tileIndices = areaModel.tiles.Select(t => t.index).Distinct().ToArray();
 			var tileAssets = await UniTask.WhenAll(
-				tileIndices.Select(t => GameDataManager.GetTileData(t).LoadAsset())
+				tileIndices.Select(t => GameDataManager.GetTileData(t).AutoLoad())
 			);
 
 			areaModel.tiles.ForEach((t, i, j) => {
@@ -30,7 +30,6 @@ namespace Anotode.Display.Map {
 			var obj = await AssetsManager.LoadAssetAsync<GameObject>("MapObject");
 			foreach (var p in areaModel.entrances) {
 				var sr = Instantiate(obj, p).GetComponent<SpriteRenderer>();
-
 				sr.sprite = await GameData.instance.others["spawner"].AutoLoad();
 			}
 			foreach (var p in areaModel.exits) {

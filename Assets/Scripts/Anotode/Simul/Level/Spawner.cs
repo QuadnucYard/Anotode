@@ -43,6 +43,7 @@ namespace Anotode.Simul.Level {
 			var model = (EnemyModel)_spawnList.Pop().Clone();
 			model.spawnIndex = _nextSpawnIndex++;
 			Enemy enemy = new(model) { sim = sim, areaIn = area };
+			enemy.Init();
 			enemy.localPos = area.areaModel.entrances[0] + Vector2.one / 2;
 			sim.map.areaEnemies[area].Add(enemy);
 			return enemy;
@@ -52,7 +53,6 @@ namespace Anotode.Simul.Level {
 			if (_spawnList?.Count > 0) {
 				foreach (var _ in _timer.CheckUpdate()) {
 					var enemy = Spawn();
-					enemy.Init();
 					if (_spawnList.Empty()) {
 						onSpawnComplete?.Invoke(nextRound - 1);
 					}

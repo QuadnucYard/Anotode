@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Anotode.Display.VM;
 
 namespace Anotode.Simul.Objects {
-	public class Simulatable {
+	public abstract class Simulatable {
 
-		public Simulation sim;
+		public Simulation sim { get; set; }
+		public DisplayNode displayNode { get; set; }
 
 	}
 }

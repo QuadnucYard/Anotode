@@ -1,8 +1,10 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Quadnuc.Utils;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
+using UnityEngine.ResourceManagement.ResourceLocations;
 
 namespace Anotode.Display {
 	public static class AssetsManager {
@@ -18,13 +20,23 @@ namespace Anotode.Display {
 			string.Empty;
 #endif
 
+		private static readonly Dictionary<string, UniTask> handlers = new();
+
+		static AssetsManager() {
+			//Addressables.InternalIdTransformFunc = Addressables_InternalIdTransformFunc;
+		}
+
+		//private static string Addressables_InternalIdTransformFunc(IResourceLocation location) {
+		//	return location.InternalId;
+		//}
+
 		public static T LoadAsset<T>(string key) {
 			var op = Addressables.LoadAssetAsync<T>(key);
 			return op.WaitForCompletion();
 		}
 
 		public static async UniTask<T> LoadAssetAsync<T>(string key) {
-			return await Addressables.LoadAssetAsync<T>(key).Task;
+			return await Addressables.LoadAssetAsync<T>(key);
 		}
 
 		private static string ToUrl(string file) =>
@@ -43,6 +55,8 @@ namespace Anotode.Display {
 		}
 
 		public static async UniTask<Texture2D> LoadTexture(string path) {
+			//if (handlers.ContainsKey(path)) return (await handlers[path]).;
+			//handlers.Add(path, )
 			var re = await UnityWebRequestTexture.GetTexture(ToUrl(path)).SendWebRequest();
 			return DownloadHandlerTexture.GetContent(re);
 		}

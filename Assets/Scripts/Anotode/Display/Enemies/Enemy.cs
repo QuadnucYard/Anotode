@@ -1,4 +1,5 @@
 ﻿using Anotode.Models;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace Anotode.Display {
@@ -6,10 +7,10 @@ namespace Anotode.Display {
 
 		public EnemyModel enemyModel;
 
-		public void SetSprite() {
+		public async UniTaskVoid SetSprite() {
 			var sr = gameObject.GetComponentInChildren<SpriteRenderer>();
 			//sr.color = Random.ColorHSV();
-			sr.sprite = Resources.Load<Sprite>($"Graphics/Enemy/{enemyModel.id}");
+			sr.sprite = await AssetsLoader.GetSprite(enemyModel.display);
 			sr.sortingOrder = enemyModel.spawnIndex;
 		}
 	}

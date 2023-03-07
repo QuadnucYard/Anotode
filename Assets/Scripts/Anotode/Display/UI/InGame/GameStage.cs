@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using Anotode.Data;
 using Anotode.Display.Bridge;
+using Anotode.Display.Map;
 using Anotode.Models;
 using Anotode.Models.Map;
 using Anotode.Simul;
+using Cysharp.Threading.Tasks;
 using Quadnuc.Utils;
 using UnityEngine;
 using UnityEngine.UI;
@@ -41,7 +43,12 @@ namespace Anotode.Display.UI.InGame {
 			});
 
 			sim.InitLevel(level);
-			map.CreateMap(sim.model.map).Forget(); // NOTE: 这里没有await
+			foreach (var a in sim.map.areas) {
+				a.displayNode.onCreated += n => n.GetComponent<TiledArea>().Create(a.areaModel).Forget();
+			}
+
+			// 这里应该异步先加载所有资源
+			map.CreateMap(sim.model.map); // NOTE: 这里没有await
 
 			bridge = new();
 			// 初始化委托事件
@@ -63,6 +70,7 @@ namespace Anotode.Display.UI.InGame {
 
 		private IEnumerator GameCycle() {
 			while (true) {
+				Game.instance.factory.Tidy(bridge.simulation.timer.time);
 				bridge.simulation.Simulate();
 				yield return new WaitForSeconds(GlobalData.fixedUpdateTime);
 			}

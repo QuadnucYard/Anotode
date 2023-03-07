@@ -5,6 +5,7 @@ namespace Anotode.Data.Enemies {
 	public class EnemyData {
 		readonly string id;
 		readonly string baseId;
+		readonly SpriteData sprite;
 		readonly float speed;
 		readonly int population;
 		readonly int charm;
@@ -16,6 +17,7 @@ namespace Anotode.Data.Enemies {
 		public EnemyModel def => new() {
 			id = id,
 			baseId = baseId,
+			display = sprite.token,
 			speed = speed,
 			population = population,
 			charm = charm,

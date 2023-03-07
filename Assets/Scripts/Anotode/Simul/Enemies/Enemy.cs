@@ -13,6 +13,7 @@ namespace Anotode.Simul {
 		/// </summary>
 		private const float InvasionDistance = 0.2f;
 		private const int PathRefindInterval = GlobalData.framesPerSecond * 5;
+		private const int InitialPathTime = -10000;
 
 		public readonly EnemyModel enemyModel;
 		//private int health;
@@ -33,16 +34,16 @@ namespace Anotode.Simul {
 		public TiledArea areaIn;
 
 		public Vector2 localPos {
-			get => areaIn.GlobalToLocal(mapPos);
-			set => mapPos = areaIn.LocalToGlobal(value);
+			get => displayNode.position;
+			set => displayNode.position = value;
 		}
 		public Vector2 mapPos {
-			get => enemyModel.pos;
-			set => enemyModel.pos = value;
+			get => areaIn.LocalToMap(localPos);
+			set => localPos = areaIn.MapToLocal(value);
 		}
 		public float localRotation {
-			get => enemyModel.rotation;
-			set => enemyModel.rotation = value;
+			get => displayNode.rotation;
+			set => displayNode.rotation = value;
 		}
 
 		public Enemy(EnemyModel model) {
@@ -53,20 +54,27 @@ namespace Anotode.Simul {
 		public void Init() {
 			distanceTraveled = 0;
 			spawnTime = sim.timer.time;
-			_lastPathTime = -1000;
+			_lastPathTime = InitialPathTime;
 			_isTransferring = false;
 			_innatePathOffset = UnityEngine.Random.Range(-0.2f, 0.2f);
 
 			// Create view
-			controller = new() { };
-			controller.Init(enemyModel);
-			controller.OnUpdate();
+			controller = new();
+
+			displayNode = new("Enemy");
+			displayNode.SetParent(areaIn.displayNode);
+			displayNode.Create();
+			displayNode.onCreated += n => {
+				controller.Init(n, enemyModel);
+			};
+			// 这里暂时让controller托管资源的加载
 		}
 
 		public void Process() {
 			if (dead) return;
-			if (_path == null && sim.timer.time - _lastPathTime > PathRefindInterval) FindPath();
+			if ((_path == null || _path.Empty) && sim.timer.time - _lastPathTime > PathRefindInterval) FindPath();
 			if (_path != null) StepMove(sim.timer.elapsed);
+			displayNode.Update();
 		}
 
 		private void FindPath() {
@@ -93,26 +101,30 @@ namespace Anotode.Simul {
 			} else {
 				CheckMove(stepLength);
 			}
-			controller.OnUpdate();
+			//controller.OnUpdate();
 		}
 
 		private void CheckTransfer(float stepLength) {
+			if (_path == null || _path.Empty) return;
 			var currentPoint = mapPos;
-			var pathFirst = _path.area.LocalToGlobal(_path.First);
-			var displacement = _path.area.LocalToGlobal(_path.First) - currentPoint;
+			var pathFirst = _path.area.LocalToMap(_path.First);
+			var displacement = _path.area.LocalToMap(_path.First) - currentPoint;
 			float distance = displacement.magnitude;
 			localRotation = Vector2.SignedAngle(Vector2.up, displacement);
 			if (distance <= stepLength) { // Transfer complete
-				_isTransferring = false;
 				mapPos = pathFirst;
 				TransferArea(_path.area);
 				CheckMove(stepLength - distance);
 			} else {
 				localPos += displacement.normalized * stepLength;
+				if (areaIn.areaModel.ContainsPoint(localPos)) {
+					TransferArea(_path.area);
+				}
 			}
 		}
 
 		private void CheckMove(float stepLength) {
+			if (_path.area != areaIn) throw new System.Exception("xxxx");
 			if (_path.Empty) return;
 			distanceTraveled += stepLength;
 			var currentPoint = localPos;
@@ -136,6 +148,7 @@ namespace Anotode.Simul {
 				}
 				if (sim.timer.time - _lastPathTime > PathRefindInterval) {
 					localPos = currentPoint;
+					localRotation = Vector2.SignedAngle(Vector2.up, displacement);
 					FindPath();
 				}
 				_lastPathTime = sim.timer.time;
@@ -145,9 +158,11 @@ namespace Anotode.Simul {
 		}
 
 		public void TransferArea(TiledArea to) {
-			var p = areaIn.LocalToGlobal(localPos);
+			var mapPos = areaIn.LocalToMap(localPos);
 			areaIn = to;
-			localPos = to.GlobalToLocal(p);
+			displayNode.SetParent(areaIn.displayNode);
+			localPos = to.MapToLocal(mapPos);
+			_isTransferring = false;
 		}
 
 		private void Invade() {
@@ -157,7 +172,8 @@ namespace Anotode.Simul {
 		}
 
 		private void Destroy() {
-			controller.OnDestroy();
+			//controller.OnDestroy();
+			displayNode.Destroy();
 		}
 
 	}

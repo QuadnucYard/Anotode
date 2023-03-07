@@ -10,17 +10,17 @@ namespace Anotode.Display.Map {
 		public GameMapModel mapModel;
 		public Tile tileTemplate;
 
-		public List<TiledArea> areas;
+		//public List<TiledArea> areas;
 
-		public async UniTaskVoid CreateMap(GameMapModel mapModel) {
+		public void CreateMap(GameMapModel mapModel) {
 			this.mapModel = mapModel;
 
-			var areaPrefab = await AssetsManager.LoadAssetAsync<GameObject>("TiledArea");
-			areas = new();
-			foreach (var a in mapModel.tiledAreas) {
-				var area = Instantiate(areaPrefab, transform).GetComponent<TiledArea>();
-				await area.Create(a);
-			}
+			//var areaPrefab = await AssetsManager.LoadAssetAsync<GameObject>("TiledArea");
+			//areas = new();
+			//foreach (var a in mapModel.tiledAreas) {
+			//	var area = Instantiate(areaPrefab, transform).GetComponent<TiledArea>();
+			//	await area.Create(a);
+			//}
 		}
 
 	}

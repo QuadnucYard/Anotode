@@ -9,6 +9,7 @@ namespace Anotode.Models {
 
 		public string id;
 		public string baseId;
+		public int display;
 		public int invasionDamage;
 		public int charm;
 		public int charmSelf;
@@ -22,8 +23,8 @@ namespace Anotode.Models {
 		public int hpMax; //应该是根据等级算的
 		public float hpRate;
 
-		public Vector3 pos; // 暂时当它是全局坐标
-		public float rotation;
+		//public Vector3 pos; // 暂时当它是全局坐标
+		//public float rotation;
 		public int spawnIndex;
 
 		public float level {

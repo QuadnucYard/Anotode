@@ -99,11 +99,11 @@ namespace Anotode.Simul.Level {
 					}
 				}
 				// 下面判断其他区域是否存在点能衔接上
-				var globalPos = n.areaIn.CellToGlobal(n.p);
+				var globalPos = n.areaIn.CellToMap(n.p);
 				foreach (var a in n.areaIn.map.areas) {
 					if (a == n.areaIn) continue;
 					for (int k = 0; k < 4; k++) {
-						var loc = a.GlobalToCell(globalPos + directions[k]);
+						var loc = a.MapToCell(globalPos + directions[k]);
 						if (checkPos(a, loc)) {
 							yield return new(loc, a) { parent = n };
 						}
@@ -158,8 +158,8 @@ namespace Anotode.Simul.Level {
 				if (a.areaIn == b.areaIn) {
 					distance = Vector2.Distance(a.p, b.p);
 				} else {
-					var aa = a.areaIn.LocalToGlobal(a.p);
-					var bb = b.areaIn.LocalToGlobal(b.p);
+					var aa = a.areaIn.LocalToMap(a.p);
+					var bb = b.areaIn.LocalToMap(b.p);
 					distance = Vector2.Distance(aa, bb);
 				}
 				return (int)(distance * 100);

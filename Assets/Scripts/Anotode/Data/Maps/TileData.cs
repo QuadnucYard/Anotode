@@ -9,13 +9,19 @@ namespace Anotode.Data.Maps {
 		public readonly int index;
 		readonly TileType type;
 		readonly SpriteData sprite;
-		public Tile tile;
 
-		public async UniTask<Tile> LoadAsset() {
-			if (tile) return tile;
+		private Tile tile;
+		private AsyncLazy task;
+
+		public async UniTask<Tile> AutoLoad() {
+			task ??= LoadTile().ToAsyncLazy();
+			await task;
+			return tile;
+		}
+
+		private async UniTask LoadTile() {
 			tile = ScriptableObject.CreateInstance<Tile>();
 			tile.sprite = await sprite.AutoLoad();
-			return tile;
 		}
 
 		public TileModel def => new() {
