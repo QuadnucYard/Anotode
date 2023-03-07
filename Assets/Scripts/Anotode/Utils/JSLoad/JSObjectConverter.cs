@@ -63,10 +63,11 @@ namespace Anotode.Utils.JSLoad {
 			if (parsedObjects.TryGetValue(obj.getJsObjPtr(), out var value)) {
 				return value;
 			}
-			if (TypeHelper.IsList(type)) {
+			if (type == typeof(JSObject)) {
+				return obj;
+			} else  if (TypeHelper.IsList(type)) {
 				return ConvertToList(type, obj);
-			}
-			if (TypeHelper.IsDict(type)) {
+			} else if (TypeHelper.IsDict(type)) {
 				return ConvertToDict(type, obj);
 			}
 			var res = Activator.CreateInstance(type);
@@ -77,18 +78,22 @@ namespace Anotode.Utils.JSLoad {
 
 		public static IList ConvertToList(Type type, JSObject obj) {
 			var res = (IList)Activator.CreateInstance(type);
-			var gtype = type.GenericTypeArguments[0];
-			foreach (var e in getEntries(obj)) {
-				res.Add(GetValue(gtype, e.value));
+			if (obj != null) {
+				var gtype = type.GenericTypeArguments[0];
+				foreach (var e in getEntries(obj)) {
+					res.Add(GetValue(gtype, e.value));
+				}
 			}
 			return res;
 		}
 
 		public static IDictionary ConvertToDict(Type type, JSObject obj) {
 			var res = (IDictionary)Activator.CreateInstance(type);
-			var gtype = type.GenericTypeArguments[1];
-			foreach (var e in getEntries(obj)) {
-				res.Add(e.key, GetValue(gtype, e.value));
+			if (obj != null) {
+				var gtype = type.GenericTypeArguments[1];
+				foreach (var e in getEntries(obj)) {
+					res.Add(e.key, GetValue(gtype, e.value));
+				}
 			}
 			return res;
 		}

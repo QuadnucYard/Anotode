@@ -1,6 +1,10 @@
-﻿using Anotode.Models.Map;
+﻿using System.Collections.Generic;
+using Anotode.Models;
+using Anotode.Models.Map;
+using Anotode.Simul.Level.Areas;
 using Anotode.Simul.Objects;
 using Quadnuc.Utils;
+using UnityEngine.UIElements;
 using Mathf = UnityEngine.Mathf;
 using Vector2 = UnityEngine.Vector2;
 using Vector2Int = UnityEngine.Vector2Int;
@@ -14,21 +18,28 @@ namespace Anotode.Simul.Level {
 		public readonly TiledAreaModel areaModel;
 		public readonly TiledAreaFrame frame;
 
-		private Vector2 position;
+		public Vector2 position { get; set; }
+
+		public List<AreaBehavior> areaBehaviors;
 
 		public TiledArea(TiledAreaModel model) {
-			this.areaModel = model;
+			areaModel = model;
 			frame = new(this);
+
+			position = model.position;
+
 			displayNode = new("TiledArea");
 			displayNode.Create();
 		}
 
+		public void Init() {
+			areaBehaviors = AreaBehavior.CreateBehaviorsFromModels(areaModel.behaviors, sim);
+			areaBehaviors.ForEach(t => t.area = this);
+		}
+
 		public void Process() {
-			// 问题来了，model要和node同步
-			// 但很多时候model不需要知道position
-			// 所以在这里两个都设置一下应该问题不大
-			// 需要记录原始位置
-			displayNode.position = position = areaModel.position + Vector2.up * Mathf.Sin(sim.timer.time / 10.0f / areaModel.yGrid);
+			areaBehaviors.ForEach(t => t.onUpdate?.Invoke());
+			displayNode.position = position;
 			displayNode.Update();
 			UpdateFrame();
 		}

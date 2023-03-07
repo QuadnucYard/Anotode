@@ -28,7 +28,11 @@ namespace Anotode.Simul.Level {
 		}
 
 		public void Init() {
-			areas = mapModel.tiledAreas.Select(t => new TiledArea(t) { map = this, sim = sim }).ToList();
+			areas = mapModel.tiledAreas.Select(t => {
+				var a = new TiledArea(t) { map = this, sim = sim };
+				a.Init();
+				return a;
+			}).ToList();
 			areaEntrances = areas.SelectMany(t => t.areaModel.entrances.Map(s => new PositionInArea() { area = t, pos = s })).ToArray();
 			areaExits = areas.SelectMany(t => t.areaModel.exits.Map(s => new PositionInArea() { area = t, pos = s })).ToArray();
 			areaEnemies = areas.ToDictionary(t => t, t => new List<Enemy>());

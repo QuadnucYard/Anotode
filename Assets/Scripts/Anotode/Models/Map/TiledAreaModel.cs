@@ -19,6 +19,8 @@ namespace Anotode.Models.Map {
 		public Vector2Int[] entrances;
 		public Vector2Int[] exits;
 
+		public AdaptedBehaviorModel[] behaviors;
+
 		public int xGrid => tiles.GetLength(0);
 		public int yGrid => tiles.GetLength(1);
 
