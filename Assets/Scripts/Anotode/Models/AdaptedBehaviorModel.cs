@@ -1,8 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Puerts;
 
 namespace Anotode.Models {
@@ -18,9 +17,9 @@ namespace Anotode.Models {
 			return new AdaptedBehaviorModel() { obj = behavior };
 		}
 
-		public static AdaptedBehaviorModel[] Create(IEnumerable<JSObject> behaviors) {
-			if (behaviors == null) return new AdaptedBehaviorModel[0];
-			return behaviors.Select(t => Create(t)).ToArray();
+		public static IEnumerable<AdaptedBehaviorModel> Create(IEnumerable<JSObject> behaviors) {
+			if (behaviors == null) return Enumerable.Empty<AdaptedBehaviorModel>();
+			return behaviors.Select(t => Create(t));
 		}
 	}
 }

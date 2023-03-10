@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Anotode.Models;
 using Anotode.Models.Map;
 using Puerts;
@@ -24,7 +25,7 @@ namespace Anotode.Data.Maps {
 			exits = exits.ToArraySafe(),
 			pivotPoint = pivotPoint,
 			position = position,
-			behaviors = AdaptedBehaviorModel.Create(behaviors),
+			behaviors = AdaptedBehaviorModel.Create(behaviors).ToArray(),
 		};
 	}
 

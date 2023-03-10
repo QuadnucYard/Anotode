@@ -2,7 +2,7 @@
 using Anotode.Simul.Objects;
 
 namespace Anotode.Simul.Level.Areas {
-	public class AreaBehavior : BehaviorAdapter<AreaBehavior> {
+	public class AreaBehavior : Simulatable {
 
 		public TiledArea area { get; set; }
 

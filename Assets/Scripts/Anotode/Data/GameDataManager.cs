@@ -2,6 +2,7 @@
 using Anotode.Data.Maps;
 using Anotode.Models;
 using Anotode.Models.Map;
+using Anotode.Models.Towers;
 
 namespace Anotode.Data {
 	public class GameDataManager {
@@ -13,6 +14,9 @@ namespace Anotode.Data {
 		public static LevelModel[] allLevels { get; } = GameData.instance.levels.Select(t => t.def).ToArray();
 
 		public static EnemyModel[] allEnemies { get; } = GameData.instance.enemies.Select(t => t.def).ToArray();
+
+		public static TowerModel[] allTowers { get; } = GameData.instance.towers.Select(t => t.def).ToArray();
+
 
 		public static LevelModel getLevel(string id) {
 			return allLevels.First(t => t.id == id);

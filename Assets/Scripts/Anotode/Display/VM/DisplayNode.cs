@@ -39,8 +39,13 @@ namespace Anotode.Display.VM {
 			// 目前不清楚是谁来调用create
 			Game.instance.factory.CreateAsync(prefabKey, n => {
 				graphic = n;
-				if (parent != null)
-					graphic.transform.SetParent(parent.graphic.transform);
+				if (parent != null) {
+					if (parent.graphic == null) {
+						parent.onCreated += n => graphic.transform.SetParent(n.transform);
+					} else {
+						graphic.transform.SetParent(parent.graphic.transform);
+					}
+				}
 				Update();
 				_onCreated?.Invoke(n);
 				_onCreated = null;

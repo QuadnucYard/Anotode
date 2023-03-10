@@ -32,7 +32,11 @@ namespace Quadnuc.Utils {
 		}
 
 		public static List<T> ToListSafe<T>(this IEnumerable<T> e) {
-			return e==null ? new() : e.ToList();
+			return e == null ? new() : e.ToList();
+		}
+
+		public static IEnumerable<T> ToEnumerableSafe<T>(this IEnumerable<T> e) {
+			return e == null ? Enumerable.Empty<T>() : e;
 		}
 
 	}

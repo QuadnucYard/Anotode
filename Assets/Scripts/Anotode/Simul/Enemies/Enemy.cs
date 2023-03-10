@@ -68,6 +68,7 @@ namespace Anotode.Simul {
 				controller.Init(n, enemyModel);
 			};
 			// 这里暂时让controller托管资源的加载
+			process += Process;
 		}
 
 		public void Process() {

@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
-using Anotode.Models;
 using Anotode.Models.Map;
 using Anotode.Simul.Level.Areas;
 using Anotode.Simul.Objects;
 using Quadnuc.Utils;
-using UnityEngine.UIElements;
 using Mathf = UnityEngine.Mathf;
 using Vector2 = UnityEngine.Vector2;
 using Vector2Int = UnityEngine.Vector2Int;
@@ -33,7 +31,7 @@ namespace Anotode.Simul.Level {
 		}
 
 		public void Init() {
-			areaBehaviors = AreaBehavior.CreateBehaviorsFromModels(areaModel.behaviors, sim);
+			areaBehaviors = BehaviorProxyFactory.CreateFromModels<AreaBehavior>(areaModel.behaviors, sim);
 			areaBehaviors.ForEach(t => t.area = this);
 		}
 

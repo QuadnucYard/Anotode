@@ -8,6 +8,8 @@ using Quadnuc.Utils;
 namespace Anotode.Simul {
 	public class Simulation {
 
+		public delegate void ProcessDelegate();
+
 		public GameModel model;
 		public GameMap map;
 
@@ -45,8 +47,9 @@ namespace Anotode.Simul {
 		public void Simulate() {
 			spawner.Process();
 			map.areas.ForEach(t => t.Process());
-			map.areaEnemies.ForEach(t => t.Value.ForEach(t => t.Process()));
-			map.areaEnemies.ForEach(t => t.Value.RemoveAll(t => t.dead));
+			map.areaEnemies.Values.ForEach(t => t.ForEach(t => t.process?.Invoke()));
+			map.areaTowers.Values.ForEach(t => t.ForEach(t => t.process?.Invoke()));
+			map.areaEnemies.Values.ForEach(t => t.RemoveAll(t => t.dead));
 			timer.Update(1); // 需要循环模拟步长次
 		}
 
@@ -67,5 +70,6 @@ namespace Anotode.Simul {
 		public void SpawnEnemy() {
 
 		}
+
 	}
 }

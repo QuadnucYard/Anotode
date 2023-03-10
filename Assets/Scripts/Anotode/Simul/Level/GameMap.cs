@@ -3,6 +3,7 @@ using System.Linq;
 using Anotode.Models.Map;
 using Anotode.Models.Waves;
 using Anotode.Simul.Objects;
+using Anotode.Simul.Towers;
 using Quadnuc.Utils;
 using Vector2 = UnityEngine.Vector2;
 using Vector2Int = UnityEngine.Vector2Int;
@@ -17,7 +18,7 @@ namespace Anotode.Simul.Level {
 		public PositionInArea[] areaEntrances;
 		public PositionInArea[] areaExits;
 
-		// public Dictionary<ObjectId, List<Tower>> areaTowers;
+		public Dictionary<TiledArea, List<Tower>> areaTowers;
 		public Dictionary<TiledArea, List<Enemy>> areaEnemies;
 		// areaEnemies;
 
@@ -35,6 +36,7 @@ namespace Anotode.Simul.Level {
 			}).ToList();
 			areaEntrances = areas.SelectMany(t => t.areaModel.entrances.Map(s => new PositionInArea() { area = t, pos = s })).ToArray();
 			areaExits = areas.SelectMany(t => t.areaModel.exits.Map(s => new PositionInArea() { area = t, pos = s })).ToArray();
+			areaTowers = areas.ToDictionary(t => t, t => new List<Tower>());
 			areaEnemies = areas.ToDictionary(t => t, t => new List<Enemy>());
 		}
 
