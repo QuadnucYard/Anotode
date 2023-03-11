@@ -1,5 +1,7 @@
 ﻿using Anotode.Display;
+using Anotode.Utils.JSLoad;
 using Cysharp.Threading.Tasks;
+using Puerts;
 using UnityEngine;
 
 namespace Anotode.Data {
@@ -24,6 +26,12 @@ namespace Anotode.Data {
 		private async UniTask LoadSprite() {
 			var texture = await AssetsManager.LoadTexture(filename);
 			sprite = texture.CreateSprite(ppu);
+		}
+
+		public class JSObjectParser {
+			public static object Parse(JSObject obj) {
+				return JSObjectConverter.Convert<SpriteData>(obj).token;
+			}
 		}
 	}
 }

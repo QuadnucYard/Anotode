@@ -1,4 +1,5 @@
 ﻿using Anotode.Data;
+using Anotode.Models;
 using Anotode.Utils.JSLoad;
 using Anotode.Utils.Locale;
 using Quadnuc.Utils;
@@ -14,6 +15,8 @@ namespace Anotode {
 			Application.runInBackground = true;
 
 			JSDataLoader loader = new(AssetPaths.dataPath.ToString());
+			JSObjectConverter.SetValueInterface(new AdaptedBehaviorModel.JSObjectParser());
+			JSObjectConverter.SetValueInterface(new AdaptedBehaviorModel.JSObjectParser2());
 			loader.LoadTo(GameData.instance, "base/data");
 			JSObjectConverter.ClearReferences();
 

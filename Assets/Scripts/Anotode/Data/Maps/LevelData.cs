@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Anotode.Models.Map;
+﻿using Anotode.Models.Map;
+using Anotode.Models.Waves;
 
 namespace Anotode.Data.Maps {
 
@@ -12,8 +11,8 @@ namespace Anotode.Data.Maps {
 		readonly float spawnInterval;
 		readonly int splitRule;
 
-		readonly List<WaveData> waves;
-		readonly EnemyGroupData enemyGroup;
+		readonly WaveModel[] waves;
+		readonly EnemyGroupModel enemyGroup;
 
 		public LevelModel def => new() {
 			id = id,
@@ -22,8 +21,8 @@ namespace Anotode.Data.Maps {
 			hardnessB = hardnessB,
 			spawnInterval = spawnInterval,
 			splitRule = splitRule,
-			waves = waves.Select(t => t.def).ToArray(),
-			enemyGroup = enemyGroup.def,
+			waves = waves,
+			enemyGroup = enemyGroup,
 			map = GameDataManager.getMap(mapId),
 		};
 	}

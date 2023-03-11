@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Anotode.Models;
 using Anotode.Models.Towers;
-using Puerts;
+using Anotode.Models.Towers.Behaviors.Attacks;
 using Quadnuc.Utils;
 
 namespace Anotode.Data.Towers {
@@ -13,16 +12,16 @@ namespace Anotode.Data.Towers {
 		readonly SpriteData icon;
 		readonly SpriteData sprite;
 
-		readonly List<JSObject> behaviors;
-		readonly List<AttackData> attacks;
+		readonly AdaptedBehaviorModel[] behaviors;
+		readonly List<AttackModel> attacks;
 
 		public TowerModel def => new() {
 			id = id,
 			baseId = baseId,
 			icon = icon.token,
 			display = sprite.token,
-			behaviors = AdaptedBehaviorModel.Create(behaviors).ToArray(),
-			attacks = attacks.ToEnumerableSafe().Select(t => t.def).ToArray(),
+			behaviors = behaviors,
+			attacks = attacks.ToArraySafe(),
 		};
 	}
 }
