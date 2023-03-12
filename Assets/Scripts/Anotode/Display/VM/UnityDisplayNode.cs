@@ -16,6 +16,7 @@ namespace Anotode.Display.VM {
 
 		public void Create() {
 			if (!initialized) Initialize();
+			isDestroyed = false;
 			gameObject.SetActive(true);
 		}
 

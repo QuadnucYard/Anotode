@@ -40,15 +40,11 @@ namespace Anotode.Display.VM {
 			Game.instance.factory.CreateAsync(prefabKey, n => {
 				graphic = n;
 				if (parent != null) {
-					if (parent.graphic == null) {
-						parent.onCreated += n => graphic.transform.SetParent(n.transform);
-					} else {
-						graphic.transform.SetParent(parent.graphic.transform);
-					}
+					parent.onCreated += n => graphic.transform.SetParent(n.transform);
 				}
-				Update();
 				_onCreated?.Invoke(n);
 				_onCreated = null;
+				Update();
 			});
 		}
 

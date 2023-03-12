@@ -69,6 +69,7 @@ namespace Anotode.Display.VM {
 					var g = GameObject.Instantiate(h.Result, DisplayRoot).AddComponent<UnityDisplayNode>();
 					g.cloneOf = objectId;
 					onComplete?.Invoke(g);
+					active.Add(g);
 					item.count++;
 					g.Create();
 				}
@@ -76,9 +77,10 @@ namespace Anotode.Display.VM {
 		}
 
 		private void FindAndSetupPrototypeAsync(string objectId, Action<UnityDisplayNode> onComplete) {
-			var item = items[objectId];
-			onComplete?.Invoke(item.pool.Pop().node);
-			item.count++;
+			var g = items[objectId].pool.Pop().node;
+			active.Add(g);
+			g.Create();
+			onComplete?.Invoke(g);
 		}
 
 		public void Tidy(int elapsed) {
