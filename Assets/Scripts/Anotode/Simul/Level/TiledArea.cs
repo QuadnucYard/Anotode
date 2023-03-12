@@ -46,7 +46,7 @@ namespace Anotode.Simul.Level {
 			frame.ClearCostMap();
 			// 定义自然一些，charm为正表示吸引。
 			static int charmFunc(int a, float d) => -Mathf.FloorToInt(a / (d * d + 1));
-			foreach (var enemy in map.areaEnemies[this]) {
+			foreach (var enemy in map.areaEnemies[id]) {
 				var pos = enemy.localPos;
 				for (int i = 0; i < areaModel.xGrid; i++) {
 					for (int j = 0; j < areaModel.yGrid; j++) {

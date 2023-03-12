@@ -3,6 +3,7 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace Anotode.Models.Towers.Weapons {
 	public class WeaponModel : Model {
+		public AdaptedBehaviorModel emission;
 		public Vector3 eject; // 这个不知道是什么
 		public ProjectileModel projectile;
 		public bool fireWithoutTarget;
@@ -13,7 +14,7 @@ namespace Anotode.Models.Towers.Weapons {
 		public AdaptedBehaviorModel[] behaviors;
 
 		public override Model Clone() {
-			throw new System.NotImplementedException();
+			return MemberwiseClone() as WeaponModel;
 		}
 	}
 }

@@ -9,6 +9,9 @@
 		public static TResult Default<T, TResult>(T _) => default;
 		public static TResult Default<T1, T2, TResult>(T1 _1, T2 _2) => default;
 		public static TResult Default<T1, T2, T3, TResult>(T1 _1, T2 _2, T3 _3) => default;
+		public static TResult Default<T1, T2, T3, T4, TResult>(T1 _1, T2 _2, T3 _3, T4 _4) => default;
+		public static TResult Default<T1, T2, T3, T4, T5, TResult>(T1 _1, T2 _2, T3 _3, T4 _4, T5 _5) => default;
+		public static TResult Default<T1, T2, T3, T4, T5, T6, TResult>(T1 _1, T2 _2, T3 _3, T4 _4, T5 _5, T6 _6) => default;
 
 		public static T Identity<T>(T t) => t;
 

@@ -1,8 +1,9 @@
 ﻿using System;
+using Anotode.Simul.Objects;
 using Vector3 = UnityEngine.Vector3;
 
 namespace Anotode.Simul.Towers.Projectiles {
-	public class ProjectileBehavior {
+	public class ProjectileBehavior : Simulatable {
 		public Projectile projectile;
 
 		public Action<Enemy> onCollision;

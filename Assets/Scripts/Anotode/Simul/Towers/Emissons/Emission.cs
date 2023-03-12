@@ -5,6 +5,7 @@ using Anotode.Models.Towers.Projectiles;
 using Anotode.Simul.Objects;
 using Anotode.Simul.Towers.Projectiles;
 using Anotode.Simul.Towers.Weapons;
+using Anotode.Utils.JSLoad;
 using UnityEngine;
 
 namespace Anotode.Simul.Towers.Emissons {
@@ -23,10 +24,10 @@ namespace Anotode.Simul.Towers.Emissons {
 			Tower owner,
 			Weapon weapon,
 			List<Projectile> created,
-			List<Ulid> collidedWith = null
+			List<ObjectId> collidedWith = null
 		);
 
-		public EmitDelegate Emit; // 核心逻辑应该在这
+		public EmitDelegate Emit;
 
 		public Projectile BaseEmit(
 			ProjectileModel def,
@@ -44,10 +45,12 @@ namespace Anotode.Simul.Towers.Emissons {
 				target = target,
 				emittedBy = owner,
 				weapon = weapon,
-				direction = GetDirection(def, ejectPoint, target, elapsed, owner, weapon),
+				direction = GetDirection(def, ejectPoint, target, weapon),
 			};
 			created.Add(proj);
 			proj.Init(def);
+			proj.position = ejectPoint;
+			proj.displayNode.Update();
 			return proj;
 		}
 
@@ -55,12 +58,18 @@ namespace Anotode.Simul.Towers.Emissons {
 			ProjectileModel def,
 			Vector3 ejectPoint,
 			Target target,
-			int elapsed,
-			Tower owner,
 			Weapon weapon
 		);
 
-		public GetDirectionDelegate GetDirection;
+		public GetDirectionDelegate GetDirection = (t1, t2, t3, t4) => default;
+
+		public Emission() {
+			Emit = (def, ejectPoint, target, elapsed, owner, weapon, created, _) => BaseEmit(def, ejectPoint, target, elapsed, owner, weapon, created);
+		}
+
+		static Emission() {
+			JSDataLoader.vm.UsingFunc<ProjectileModel, Vector3, Target, Weapon, Vector3>();
+		}
 
 	}
 }

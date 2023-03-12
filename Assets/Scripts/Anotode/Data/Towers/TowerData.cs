@@ -12,6 +12,10 @@ namespace Anotode.Data.Towers {
 		readonly SpriteData icon;
 		readonly SpriteData sprite;
 
+		readonly float cost;
+		readonly float radius;
+		readonly float range;
+
 		readonly AdaptedBehaviorModel[] behaviors;
 		readonly List<AttackModel> attacks;
 
@@ -20,6 +24,9 @@ namespace Anotode.Data.Towers {
 			baseId = baseId,
 			icon = icon.token,
 			display = sprite.token,
+			cost = cost,
+			radius = radius,
+			range = range,
 			behaviors = behaviors,
 			attacks = attacks.ToArraySafe(),
 		};

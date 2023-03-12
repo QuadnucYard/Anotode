@@ -45,7 +45,7 @@ namespace Anotode.Simul.Level {
 			Enemy enemy = new(model) { sim = sim, areaIn = area };
 			enemy.Init();
 			enemy.localPos = area.areaModel.entrances[0] + Vector2.one / 2;
-			sim.map.areaEnemies[area].Add(enemy);
+			sim.map.areaEnemies[area.id].Add(enemy);
 			return enemy;
 		}
 

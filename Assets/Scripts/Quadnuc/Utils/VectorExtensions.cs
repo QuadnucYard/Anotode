@@ -48,5 +48,19 @@ namespace Quadnuc.Utils {
 		public static Vector2 Offset(this Vector2 vec2, float dx, float dy)
 			=> new(vec2.x + dx, vec2.y + dy);
 
+		public static Vector3 Add(this Vector3 vec, Vector3 other)
+			=> vec + other;
+
+		public static Vector3 Sub(this Vector3 vec, Vector3 other)
+			=> vec - other;
+
+		public static Vector3 Mul(this Vector3 vec, float other)
+			=> vec * other;
+
+		public static Vector3 Div(this Vector3 vec, float other)
+			=> vec / other;
+
+		public static Vector3 Neg(this Vector3 vec)
+			=> -vec;
 	}
 }

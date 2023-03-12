@@ -31,7 +31,11 @@ namespace Anotode.Simul {
 
 		public float distanceTraveled { get; private set; }
 
-		public TiledArea areaIn;
+		public ObjectId areaIdIn;
+		public TiledArea areaIn {
+			get => sim.map.GetAreaById(areaIdIn);
+			set => areaIdIn = value.id;
+		}
 
 		public Vector2 localPos {
 			get => displayNode.position;
@@ -160,8 +164,8 @@ namespace Anotode.Simul {
 
 		public void TransferArea(TiledArea to) {
 			var mapPos = areaIn.LocalToMap(localPos);
-			areaIn = to;
-			displayNode.SetParent(areaIn.displayNode);
+			sim.enemyManager.EnemyAreaChanged(this, areaIn.id, to.id);
+			displayNode.SetParent(to.displayNode);
 			localPos = to.MapToLocal(mapPos);
 			_isTransferring = false;
 		}

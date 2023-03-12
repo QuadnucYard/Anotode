@@ -18,8 +18,8 @@ namespace Anotode.Simul.Level {
 		public PositionInArea[] areaEntrances;
 		public PositionInArea[] areaExits;
 
-		public Dictionary<TiledArea, List<Tower>> areaTowers;
-		public Dictionary<TiledArea, List<Enemy>> areaEnemies;
+		public Dictionary<ObjectId, List<Tower>> areaTowers;
+		public Dictionary<ObjectId, List<Enemy>> areaEnemies;
 		// areaEnemies;
 
 		public TiledArea mainArea => areas[0];
@@ -36,8 +36,12 @@ namespace Anotode.Simul.Level {
 			}).ToList();
 			areaEntrances = areas.SelectMany(t => t.areaModel.entrances.Map(s => new PositionInArea() { area = t, pos = s })).ToArray();
 			areaExits = areas.SelectMany(t => t.areaModel.exits.Map(s => new PositionInArea() { area = t, pos = s })).ToArray();
-			areaTowers = areas.ToDictionary(t => t, t => new List<Tower>());
-			areaEnemies = areas.ToDictionary(t => t, t => new List<Enemy>());
+			areaTowers = areas.ToDictionary(t => t.id, t => new List<Tower>());
+			areaEnemies = areas.ToDictionary(t => t.id, t => new List<Enemy>());
+		}
+
+		public TiledArea GetAreaById(ObjectId id) {
+			return areas.Find(t => t.id == id);
 		}
 
 		public struct PositionInArea {

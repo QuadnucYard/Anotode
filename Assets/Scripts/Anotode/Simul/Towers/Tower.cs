@@ -5,6 +5,7 @@ using Anotode.Models.Towers;
 using Anotode.Simul.Level;
 using Anotode.Simul.Objects;
 using Anotode.Simul.Towers.Behaviors.Attacks;
+using Vector2 = UnityEngine.Vector2;
 using Vector2Int = UnityEngine.Vector2Int;
 
 namespace Anotode.Simul.Towers {
@@ -17,10 +18,24 @@ namespace Anotode.Simul.Towers {
 
 		public List<TowerBehavior> towerBehaviors { get; private set; }
 
-		public TiledArea areaPlacedOn;
+		public ObjectId areaIdPlacedOn;
+		public TiledArea areaPlacedOn { 
+			get => sim.map.GetAreaById(areaIdPlacedOn);
+			set => areaIdPlacedOn = value.id;
+		}
 
-		public Vector2Int localPos { get; set; }
-		public Vector2Int mapPos { get; set; }
+		public Vector2Int cellPos { 
+			get => areaPlacedOn.LocalToCell(localPos); 
+			set => localPos = areaPlacedOn.CellToLocal(value);
+		}
+		public Vector2 localPos {
+			get => displayNode.position;
+			set => displayNode.position = value;
+		}
+		public Vector2 mapPos {
+			get => areaPlacedOn.LocalToMap(localPos);
+			set => localPos = areaPlacedOn.MapToLocal(value);
+		}
 
 		public TowerController controller { get; private set; }
 
@@ -28,7 +43,7 @@ namespace Anotode.Simul.Towers {
 			this.towerModel = towerModel;
 			towerBehaviors = BehaviorProxyFactory.CreateFromModels<TowerBehavior>(towerModel.behaviors, sim);
 			towerBehaviors.AddRange(towerModel.attacks.Select(t => {
-				var a = new Attack() { sim = sim };
+				var a = new Attack() { sim = sim, tower = this };
 				a.Init(t);
 				return a;
 			}));

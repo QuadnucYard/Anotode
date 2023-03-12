@@ -18,15 +18,20 @@ namespace Anotode.Utils.JSLoad {
 				vm = Puerts.WebGL.GetBrowserEnv();
 #else
 				vm = new JsEnv(jsLoader, debugPort, IntPtr.Zero, IntPtr.Zero);
-				if (false && developerTools != string.Empty) {                                             // 启用 SourceMap 映射
+				if (false && developerTools != string.Empty) {      // 启用 SourceMap 映射
 					vm.ExecuteModule(developerTools);
 				};
 #endif
-				vm.UsingAction<bool>();                                                             // 处理事件要用到（有多少类型添加多少个）
-				vm.UsingAction<float>();                                                            // 处理事件要用到（有多少类型添加多少个）
-				vm.UsingAction<float, float>();                                                      // 处理事件要用到（有多少类型添加多少个）
+				// 处理事件要用到（有多少类型添加多少个）
+				vm.UsingAction<bool>();
+				vm.UsingAction<float>();
+				vm.UsingAction<float, float>();
+				vm.UsingFunc<bool>();
+				vm.UsingFunc<float>();
+				vm.UsingFunc<float?>();
+
 			};
-			if (debug) {                                                                              // 启用调试
+			if (debug) {                                           // 启用调试
 				vm.WaitDebugger();
 			};
 
