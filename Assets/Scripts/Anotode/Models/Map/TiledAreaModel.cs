@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Quadnuc.Utils;
 using Vector2 = UnityEngine.Vector2;
 using Vector2Int = UnityEngine.Vector2Int;
@@ -28,21 +29,23 @@ namespace Anotode.Models.Map {
 			return MemberwiseClone() as TiledAreaModel;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public bool ContainsPoint(Vector2 point)
 			=> point.x >= 0 && point.y >= 0 && point.x < xGrid && point.y < yGrid;
 
-		public bool ContainsMapPoint(Vector2 point)
-			=> ContainsPoint(point + pivotPoint - position);
-
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public Vector2 CellToLocal(Vector2Int pos)
 			=> new(pos.x + 0.5f, pos.y + 0.5f);
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public Vector2 LocalToMap(Vector2 pos)
 			=> pos - pivotPoint;
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public Vector2Int LocalToCell(Vector2 pos)
 			=> pos.FloorToInt();
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public Vector2 MapToLocal(Vector2 pos)
 			=> pos + pivotPoint;
 

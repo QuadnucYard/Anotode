@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using Anotode.Display.VM;
 using Anotode.Models.Map;
 using Anotode.Simul.Level.Areas;
 using Anotode.Simul.Objects;
@@ -11,6 +13,7 @@ namespace Anotode.Simul.Level {
 
 	public class TiledArea : Simulatable, IProcessable {
 
+		public int index;
 		public GameMap map;
 
 		public readonly TiledAreaModel areaModel;
@@ -20,6 +23,8 @@ namespace Anotode.Simul.Level {
 
 		public List<AreaBehavior> areaBehaviors;
 
+		public DisplayNode subDisplayNode { get; set; }
+
 		public TiledArea(TiledAreaModel model) {
 			areaModel = model;
 			frame = new(this);
@@ -28,6 +33,7 @@ namespace Anotode.Simul.Level {
 
 			displayNode = new("TiledArea");
 			displayNode.Create();
+			subDisplayNode = displayNode.BindChild("Tilemap");
 		}
 
 		public void Init() {
@@ -56,22 +62,31 @@ namespace Anotode.Simul.Level {
 			}
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public bool ContainsMapPoint(Vector2 point)
+			=> areaModel.ContainsPoint(point + areaModel.pivotPoint - position);
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public Vector2 CellToLocal(Vector2Int pos)
-			=> areaModel.CellToLocal(pos);
+			=> new(pos.x + 0.5f, pos.y + 0.5f);
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public Vector2 LocalToMap(Vector2 pos)
-			=> areaModel.LocalToMap(pos + position);
+			=> pos + position - areaModel.pivotPoint;
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public Vector2Int LocalToCell(Vector2 pos)
-			=> areaModel.LocalToCell(pos);
+			=> pos.FloorToInt();
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public Vector2 MapToLocal(Vector2 pos)
-			=> areaModel.MapToLocal(pos - position);
+			=> pos - position + areaModel.pivotPoint;
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public Vector2 CellToMap(Vector2Int pos)
 			=> LocalToMap(CellToLocal(pos));
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public Vector2Int MapToCell(Vector2 pos)
 			=> LocalToCell(MapToLocal(pos));
 

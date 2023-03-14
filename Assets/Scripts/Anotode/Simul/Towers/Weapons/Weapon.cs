@@ -71,7 +71,7 @@ namespace Anotode.Simul.Towers.Weapons {
 			weaponBehaviors.ForEach(t => t.onEmissionStart());
 
 			var projectile = weaponBehaviors.Aggregate((ProjectileModel)weaponModel.projectile.Clone(), (pm, next) => next.getProjectile(pm));
-			emission.Emit(projectile, ejectPoint, mainAttack.target, elapsed, owner, this, created);
+			emission.Emit(projectile, ejectPoint, mainAttack.target, owner, this, created);
 
 			weaponBehaviors.ForEach(t => t.onProjectilesCreated(created));
 

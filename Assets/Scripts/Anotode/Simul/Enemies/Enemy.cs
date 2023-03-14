@@ -5,7 +5,7 @@ using Anotode.Simul.Physics;
 using Vector2 = UnityEngine.Vector2;
 
 namespace Anotode.Simul {
-	public class Enemy : Collidable, IProcessable {
+	public class Enemy : Collidable {
 
 		/// <summary>
 		/// 进家判定距离。
@@ -13,7 +13,9 @@ namespace Anotode.Simul {
 		/// </summary>
 		private const float InvasionDistance = 0.2f;
 		private const int PathRefindInterval = GlobalData.framesPerSecond * 5;
+		private const int PathRefindIntervalWhenNull = GlobalData.framesPerSecond;
 		private const int InitialPathTime = -10000;
+		private const float TransferThreshold = 1.001f;
 
 		public readonly EnemyModel enemyModel;
 		//private int health;
@@ -66,7 +68,7 @@ namespace Anotode.Simul {
 			controller = new();
 
 			displayNode = new("Enemy");
-			displayNode.SetParent(areaIn.displayNode);
+			displayNode.SetParent(areaIn.subDisplayNode);
 			displayNode.Create();
 			displayNode.onCreated += n => {
 				controller.Init(n, enemyModel);
@@ -75,9 +77,9 @@ namespace Anotode.Simul {
 			process += Process;
 		}
 
-		public void Process() {
+		private void Process() {
 			if (dead) return;
-			if ((_path == null || _path.Empty) && sim.timer.time - _lastPathTime > PathRefindInterval) FindPath();
+			if ((_path == null || _path.Empty) && sim.timer.time - _lastPathTime > PathRefindIntervalWhenNull) FindPath();
 			if (_path != null) StepMove(sim.timer.elapsed);
 			displayNode.Update();
 		}
@@ -93,7 +95,7 @@ namespace Anotode.Simul {
 			_lastPathTime = sim.timer.time;
 		}
 
-		public void StepMove(int elapsed) {
+		private void StepMove(int elapsed) {
 			// 这里特判一下，如果足够进就进家
 			if (_path.ended && Vector2.Distance(localPos, _path.Last) < InvasionDistance) {
 				Invade();
@@ -113,16 +115,21 @@ namespace Anotode.Simul {
 			if (_path == null || _path.Empty) return;
 			var currentPoint = mapPos;
 			var pathFirst = _path.area.LocalToMap(_path.First);
-			var displacement = _path.area.LocalToMap(_path.First) - currentPoint;
+			var displacement = pathFirst - currentPoint;
 			float distance = displacement.magnitude;
+			if (distance > TransferThreshold) {
+				_isTransferring = false;
+				_path = null;
+				return;
+			}
 			localRotation = Vector2.SignedAngle(Vector2.up, displacement);
 			if (distance <= stepLength) { // Transfer complete
 				mapPos = pathFirst;
 				TransferArea(_path.area);
-				CheckMove(stepLength - distance);
+				//CheckMove(stepLength - distance);
 			} else {
-				localPos += displacement.normalized * stepLength;
-				if (areaIn.areaModel.ContainsPoint(localPos)) {
+				mapPos += displacement.normalized * stepLength;
+				if (_path.area.ContainsMapPoint(mapPos)) {
 					TransferArea(_path.area);
 				}
 			}
@@ -130,6 +137,7 @@ namespace Anotode.Simul {
 
 		private void CheckMove(float stepLength) {
 			if (_path.area != areaIn) throw new System.Exception("xxxx");
+			//if (!areaIn.ContainsMapPoint(mapPos)) throw new System.Exception("xxxxxx");
 			if (_path.Empty) return;
 			distanceTraveled += stepLength;
 			var currentPoint = localPos;
@@ -148,7 +156,7 @@ namespace Anotode.Simul {
 				if (_path.Empty) {
 					localPos = currentPoint;
 					FindPath();
-					CheckTransfer(stepLength);
+					//CheckTransfer(stepLength);
 					return;
 				}
 				if (sim.timer.time - _lastPathTime > PathRefindInterval) {
@@ -162,12 +170,20 @@ namespace Anotode.Simul {
 			localRotation = Vector2.SignedAngle(Vector2.up, displacement);
 		}
 
-		public void TransferArea(TiledArea to) {
+		private void TransferArea(TiledArea to) {
+			// 还是没解决local pos 直接继承的问题
+			if (areaIdIn == to.id) {
+				throw new System.Exception("Fucking transfer!");
+			}
 			var mapPos = areaIn.LocalToMap(localPos);
 			sim.enemyManager.EnemyAreaChanged(this, areaIn.id, to.id);
-			displayNode.SetParent(to.displayNode);
-			localPos = to.MapToLocal(mapPos);
+			displayNode.SetParent(to.subDisplayNode);
+			//localPos = to.MapToLocal(mapPos);
+			this.mapPos = mapPos;
 			_isTransferring = false;
+			if (areaIn != to) {
+				throw new System.Exception("Fucking transfer!");
+			}
 		}
 
 		private void Invade() {

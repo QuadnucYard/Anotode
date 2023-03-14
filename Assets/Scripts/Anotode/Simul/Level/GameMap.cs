@@ -29,8 +29,8 @@ namespace Anotode.Simul.Level {
 		}
 
 		public void Init() {
-			areas = mapModel.tiledAreas.Select(t => {
-				var a = new TiledArea(t) { map = this, sim = sim };
+			areas = mapModel.tiledAreas.Select((t, i) => {
+				var a = new TiledArea(t) { index = i, map = this, sim = sim };
 				a.Init();
 				return a;
 			}).ToList();
@@ -42,6 +42,10 @@ namespace Anotode.Simul.Level {
 
 		public TiledArea GetAreaById(ObjectId id) {
 			return areas.Find(t => t.id == id);
+		}
+
+		public TiledArea GetAreaAtPoint(Vector2 mapPos) {
+			return areas.LastOrDefault(a => a.ContainsMapPoint(mapPos));
 		}
 
 		public struct PositionInArea {

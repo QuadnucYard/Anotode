@@ -16,15 +16,15 @@ namespace Anotode.Simul.Towers.Emissons {
 
 		public Action onDestroy;
 
+		// 因为delegate没法传基本类型，把elapsed去掉了
+
 		public delegate void EmitDelegate(
 			ProjectileModel def,
 			Vector3 ejectPoint,
 			Target collidedTarget,
-			int elapsed,
 			Tower owner,
 			Weapon weapon,
-			List<Projectile> created,
-			List<ObjectId> collidedWith = null
+			List<Projectile> created
 		);
 
 		public EmitDelegate Emit;
@@ -33,7 +33,6 @@ namespace Anotode.Simul.Towers.Emissons {
 			ProjectileModel def,
 			Vector3 ejectPoint,
 			Target target,
-			int elapsed,
 			Tower owner,
 			Weapon weapon,
 			List<Projectile> created
@@ -41,7 +40,7 @@ namespace Anotode.Simul.Towers.Emissons {
 			var proj = new Projectile {
 				sim = sim,
 				emittedFrom = ejectPoint,
-				createdAt = elapsed,
+				createdAt = owner.sim.timer.time,
 				target = target,
 				emittedBy = owner,
 				weapon = weapon,
@@ -64,10 +63,11 @@ namespace Anotode.Simul.Towers.Emissons {
 		public GetDirectionDelegate GetDirection = (t1, t2, t3, t4) => default;
 
 		public Emission() {
-			Emit = (def, ejectPoint, target, elapsed, owner, weapon, created, _) => BaseEmit(def, ejectPoint, target, elapsed, owner, weapon, created);
+			Emit = (def, ejectPoint, target, owner, weapon, created) => BaseEmit(def, ejectPoint, target, owner, weapon, created);
 		}
 
 		static Emission() {
+			JSDataLoader.vm.UsingAction<ProjectileModel, Vector3, Target, Tower, Weapon, List<Projectile>>();
 			JSDataLoader.vm.UsingFunc<ProjectileModel, Vector3, Target, Weapon, Vector3>();
 		}
 

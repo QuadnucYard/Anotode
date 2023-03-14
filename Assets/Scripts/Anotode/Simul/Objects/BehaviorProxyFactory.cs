@@ -29,5 +29,9 @@ namespace Anotode.Simul.Objects {
 		public static List<T> CreateFromModels<T>(IEnumerable<AdaptedBehaviorModel> models, Simulation sim) where T : Simulatable, new() {
 			return models.Select(t => CreateFromModel<T>(t, sim)).ToList();
 		}
+
+		public static void BindBehavior(Simulatable behavior, AdaptedBehaviorModel model) {
+			bindBehavior(behavior, model.obj);
+		}
 	}
 }

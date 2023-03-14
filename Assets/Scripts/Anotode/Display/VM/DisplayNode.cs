@@ -37,6 +37,7 @@ namespace Anotode.Display.VM {
 
 		public void Create() {
 			// 目前不清楚是谁来调用create
+			if (prefabKey == null) return;
 			Game.instance.factory.CreateAsync(prefabKey, n => {
 				graphic = n;
 				if (parent != null) {
@@ -59,6 +60,20 @@ namespace Anotode.Display.VM {
 				graphic.transform.SetLocalPositionAndRotation(position, Quaternion.Euler(0, 0, rotation));
 				graphic.transform.localScale = scale;
 			}
+		}
+
+		public DisplayNode BindChild(int index) {
+			DisplayNode node = new(null);
+			node.SetParent(this);
+			onCreated += n => node.graphic = n.transform.GetChild(index).gameObject.AddComponent<UnityDisplayNode>();
+			return node;
+		}
+
+		public DisplayNode BindChild(string name) {
+			DisplayNode node = new(null);
+			node.SetParent(this);
+			onCreated += n => node.graphic = n.transform.Find(name).gameObject.AddComponent<UnityDisplayNode>();
+			return node;
 		}
 
 	}

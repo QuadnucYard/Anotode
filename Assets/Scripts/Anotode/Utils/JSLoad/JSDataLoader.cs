@@ -18,7 +18,7 @@ namespace Anotode.Utils.JSLoad {
 				vm = Puerts.WebGL.GetBrowserEnv();
 #else
 				vm = new JsEnv(jsLoader, debugPort, IntPtr.Zero, IntPtr.Zero);
-				if (false && developerTools != string.Empty) {      // 启用 SourceMap 映射
+				if (developerTools != string.Empty) {      // 启用 SourceMap 映射
 					vm.ExecuteModule(developerTools);
 				};
 #endif

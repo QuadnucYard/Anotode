@@ -25,8 +25,13 @@ namespace Anotode.Simul.Towers.Behaviors.Attacks {
 				a.Init(t);
 				return a;
 			}).ToList();
-			//activeTargetSupplier = BehaviorProxyFactory.CreateFromModel<TargetSupplier>(attackModel.targetSupplier, sim);
-			SetActiveTargetSupplier(TargetType.First);
+			if (attackModel.targetSupplier !=null) {
+				activeTargetSupplier = new() { sim = sim, attack = this };
+				BehaviorProxyFactory.BindBehavior(activeTargetSupplier, attackModel.targetSupplier);
+				//activeTargetSupplier = BehaviorProxyFactory.CreateFromModel<TargetSupplier>(attackModel.targetSupplier, sim);
+			} else {
+				SetActiveTargetSupplier(TargetType.First);
+			}
 
 			range = attackModel.range;
 
@@ -60,6 +65,7 @@ namespace Anotode.Simul.Towers.Behaviors.Attacks {
 
 		public void SetActiveTargetSupplier(TargetType targetType) {
 			activeTargetSupplier = new() {
+				attack = this,
 				getTarget = () => TargetSupplier.EnemyToTarget(sim.enemyManager.GetTarget(tower.mapPos, range, targetType)),
 			};
 		}
