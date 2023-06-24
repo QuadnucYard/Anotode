@@ -76,3 +76,7 @@ crashlytics-build.properties
 *
 !*/
 !Assets/Scripts/**/*.cs
+!TS/**
+
+node_modules
+*.meta

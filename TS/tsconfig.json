@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "jsx": "preserve",
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "../Assets/Puerts/Typing",
+      "../Assets/Gen/Typing",
+      "../Assets/Gen/Typing/csharp"
+    ],
+    "sourceMap": true,
+    "sourceRoot": "../Assets/StreamingAssets/data"
+  },
+  "inclde": ["./src/*.ts"]
+}
