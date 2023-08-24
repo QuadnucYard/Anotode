@@ -75,5 +75,6 @@ crashlytics-build.properties
 *.asset
 *
 !*/
+!Assets/Editor/**/*.cs
 !Assets/Scripts/**/*.cs
 !TS/**
