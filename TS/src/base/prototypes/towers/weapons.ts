@@ -4,6 +4,7 @@ import { MultipleEmission, SingleEmission } from "./emissions";
 import { basicProjectile } from "./projectiles";
 
 import ue = CS.UnityEngine;
+import { def } from "../../../core/def";
 
 type WeaponBehavior = CS.Anotode.Simul.Towers.Weapons.WeaponBehavior;
 

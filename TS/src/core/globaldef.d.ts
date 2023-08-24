@@ -22,7 +22,3 @@ interface BehaviorModel {
   $base?: Type;
   $impl: Type;
 }
-
-function def<T>(obj: T): T {
-  return obj;
-}

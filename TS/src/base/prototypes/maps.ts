@@ -1,3 +1,4 @@
+import { def } from "../../core/def";
 import ue = CS.UnityEngine;
 
 import { vec2 } from "../../core/prototypes/utils";

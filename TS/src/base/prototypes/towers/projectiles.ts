@@ -2,6 +2,7 @@ import { BehaviorProxy } from "../../../core/adapter";
 import { defineSprite } from "../../../core/prototypes/utils";
 
 import ue = CS.UnityEngine;
+import { def } from "../../../core/def";
 
 const { GameTimer } = CS.Anotode.Simul;
 

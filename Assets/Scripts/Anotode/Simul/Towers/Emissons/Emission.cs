@@ -17,17 +17,25 @@ namespace Anotode.Simul.Towers.Emissons {
 		public Action onDestroy;
 
 		// 因为delegate没法传基本类型，把elapsed去掉了
+		public struct EmitPayload {
+			public ProjectileModel def;
+			public Vector3 ejectPoint;
+			public Target collidedTarget;
+			public Tower owner;
+			public Weapon weapon;
+			public List<Projectile> created;
 
-		public delegate void EmitDelegate(
-			ProjectileModel def,
-			Vector3 ejectPoint,
-			Target collidedTarget,
-			Tower owner,
-			Weapon weapon,
-			List<Projectile> created
-		);
+			public EmitPayload(ProjectileModel def, Vector3 ejectPoint, Target collidedTarget, Tower owner, Weapon weapon, List<Projectile> created) {
+				this.def = def;
+				this.ejectPoint = ejectPoint;
+				this.collidedTarget = collidedTarget;
+				this.owner = owner;
+				this.weapon = weapon;
+				this.created = created;
+			}
+		}
 
-		public EmitDelegate Emit;
+		public Action<EmitPayload> Emit;
 
 		public Projectile BaseEmit(
 			ProjectileModel def,
@@ -53,6 +61,10 @@ namespace Anotode.Simul.Towers.Emissons {
 			return proj;
 		}
 
+		public Projectile BaseEmit(EmitPayload payload) {
+			return BaseEmit(payload.def, payload.ejectPoint, payload.collidedTarget, payload.owner, payload.weapon, payload.created);
+		}
+
 		public delegate Vector3 GetDirectionDelegate(
 			ProjectileModel def,
 			Vector3 ejectPoint,
@@ -63,11 +75,11 @@ namespace Anotode.Simul.Towers.Emissons {
 		public GetDirectionDelegate GetDirection = (t1, t2, t3, t4) => default;
 
 		public Emission() {
-			Emit = (def, ejectPoint, target, owner, weapon, created) => BaseEmit(def, ejectPoint, target, owner, weapon, created);
+			Emit = (payload) => BaseEmit(payload);
 		}
 
 		static Emission() {
-			JSDataLoader.vm.UsingAction<ProjectileModel, Vector3, Target, Tower, Weapon, List<Projectile>>();
+			JSDataLoader.vm.UsingAction<EmitPayload>();
 			JSDataLoader.vm.UsingFunc<ProjectileModel, Vector3, Target, Weapon, Vector3>();
 		}
 

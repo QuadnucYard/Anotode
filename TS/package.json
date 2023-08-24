@@ -5,10 +5,11 @@
     "test": "echo 'Hello'"
   },
   "dependencies": {
+    "buffer": "^6.0.3",
     "chrome-remote-interface": "^0.32.2",
     "source-map-support": "^0.5.21"
   },
   "devDependencies": {
-    "@types/node": "^20.3.1"
+    "@types/node": "^20.5.4"
   }
 }

@@ -23,7 +23,7 @@ namespace Anotode.Utils.JSLoad {
 		/// <returns>true/false</returns>
 		public bool FileExists(string filePath) {
 			// Puerts 需要调用到其目录下的一些 js 文件，这里通通判为存在
-			if (IsPuertsModule(filePath)) return true;
+			//if (IsPuertsModule(filePath)) return true;
 
 #if UNITY_EDITOR
 			return File.Exists(PathUnified(root, filePath));
@@ -49,8 +49,9 @@ namespace Anotode.Utils.JSLoad {
 		/// <param name="debugPath">文件完整路径</param>
 		/// <returns>文本内容</returns>
 		public string ReadFile(string filePath, out string debugPath) {
-			bool isPuerts = IsPuertsModule(filePath);
-			debugPath = isPuerts ? GetPuertsModulePath(filePath) : PathUnified(root, filePath);
+			//bool isPuerts = IsPuertsModule(filePath);
+			//debugPath = isPuerts ? GetPuertsModulePath(filePath) : PathUnified(root, filePath);
+			debugPath = PathUnified(root, filePath);
 			return File.ReadAllText(debugPath);
 		}
 

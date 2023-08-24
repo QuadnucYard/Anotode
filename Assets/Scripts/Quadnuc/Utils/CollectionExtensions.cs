@@ -56,6 +56,14 @@ namespace Quadnuc.Utils {
 			}
 		}
 
+		public static IEnumerable<(int, T)> Enumerate<T>(this IEnumerable<T> self) {
+			int i = 0;
+			foreach (var p in self) {
+				yield return (i, p);
+				i++;
+			}
+		}
+
 		public static float Product<T>(this IEnumerable<T> source, Func<T, float> pred, float initial = 1) {
 			float cur = initial;
 			foreach (T p in source) {

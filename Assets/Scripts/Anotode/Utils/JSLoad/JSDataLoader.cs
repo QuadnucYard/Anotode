@@ -1,5 +1,7 @@
 ﻿using System;
 using Puerts;
+using Puerts.TSLoader;
+using UnityEngine;
 
 namespace Anotode.Utils.JSLoad {
 	internal class JSDataLoader : IDisposable {
@@ -11,14 +13,16 @@ namespace Anotode.Utils.JSLoad {
 		public static JsEnv vm { get; private set; }
 
 		public JSDataLoader(string jsDir) {
-			//Application.runInBackground = true;
-			var jsLoader = new JSLoader(jsDir); ;
+			Application.runInBackground = true;
+			var tsLoader = new TSLoader();
+			tsLoader.UseRuntimeLoader(new JSLoader(jsDir));
+			tsLoader.UseRuntimeLoader(new DefaultLoader());
 			if (vm == null) {
 #if UNITY_WEBGL && !UNITY_EDITOR
 				vm = Puerts.WebGL.GetBrowserEnv();
 #else
-				vm = new JsEnv(jsLoader, debugPort, IntPtr.Zero, IntPtr.Zero);
-				if (developerTools != string.Empty) {      // 启用 SourceMap 映射
+				vm = new JsEnv(tsLoader);
+				if (developerTools.Length > 0) {      // 启用 SourceMap 映射
 					vm.ExecuteModule(developerTools);
 				};
 #endif

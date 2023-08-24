@@ -6,13 +6,13 @@ namespace Quadnuc.Utils {
 		private readonly string path;
 
 		public Pathy(string path1) {
-			path = path1;
+			path = path1.Replace("\\", "/");
 		}
 		public Pathy(string path1, string path2) {
-			path = Path.Combine(path1, path2);
+			path = Path.Combine(path1, path2).Replace("\\", "/");
 		}
 		public Pathy(params string[] paths) {
-			path = Path.Combine(paths);
+			path = Path.Combine(paths).Replace("\\", "/");
 		}
 
 		public FileInfo File => new(path);

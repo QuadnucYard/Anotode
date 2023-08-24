@@ -1,4 +1,5 @@
 import { BehaviorProxy } from "../../../core/adapter";
+import { def } from "../../../core/def";
 import { vec3 } from "../../../core/prototypes/utils";
 import { basicWeapon, multiWeapon } from "./weapons";
 
