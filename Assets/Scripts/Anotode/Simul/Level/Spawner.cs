@@ -4,6 +4,7 @@ using System.Linq;
 using Anotode.Models;
 using Anotode.Models.Map;
 using Anotode.Models.Waves;
+using Anotode.Simul.Enemies;
 using Anotode.Simul.Objects;
 using Quadnuc.Utils;
 using Vector2 = UnityEngine.Vector2;

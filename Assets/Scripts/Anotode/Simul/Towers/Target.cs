@@ -1,4 +1,5 @@
-﻿using Vector3 = UnityEngine.Vector3;
+﻿using Anotode.Simul.Enemies;
+using Vector3 = UnityEngine.Vector3;
 
 namespace Anotode.Simul.Towers {
 	// 这其实是一个union

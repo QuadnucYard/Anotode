@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Anotode.Simul.Enemies;
 using Anotode.Utils.JSLoad;
 using Quadnuc.Utils;
 

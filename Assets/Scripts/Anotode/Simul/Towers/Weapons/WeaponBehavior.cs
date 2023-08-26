@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Anotode.Models.Towers.Projectiles;
+using Anotode.Simul.Enemies;
 using Anotode.Simul.Objects;
 using Anotode.Simul.Towers.Emissons;
 using Anotode.Simul.Towers.Projectiles;

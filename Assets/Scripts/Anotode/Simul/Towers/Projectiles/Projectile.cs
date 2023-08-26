@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Anotode.Models.Towers.Projectiles;
+using Anotode.Simul.Enemies;
 using Anotode.Simul.Objects;
 using Anotode.Simul.Physics;
 using Anotode.Simul.Towers.Weapons;

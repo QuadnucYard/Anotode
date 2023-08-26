@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Anotode.Models;
+using Anotode.Simul.Enemies;
 using Quadnuc.Utils;
 using Mathf = UnityEngine.Mathf;
 using Vector2 = UnityEngine.Vector2;

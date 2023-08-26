@@ -2,6 +2,7 @@
 using System.Linq;
 using Anotode.Models.Towers;
 using Anotode.Models.Towers.Behaviors.Attacks;
+using Anotode.Simul.Enemies;
 using Anotode.Simul.Objects;
 using Anotode.Simul.Towers.Behaviors.Attacks.Behaviors;
 using Anotode.Simul.Towers.Weapons;

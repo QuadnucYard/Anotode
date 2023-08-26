@@ -39,7 +39,8 @@ namespace Anotode.Display.UI.InGame {
 			Simulation sim = new();
 			var level = GameDataManager.getLevel(levelId);
 			sim.Init(new() {
-				enemies = GameDataManager.allEnemies
+				enemies = GameDataManager.allEnemies,
+				towers = GameDataManager.allTowers,
 			});
 
 			sim.InitLevel(level);
@@ -65,6 +66,8 @@ namespace Anotode.Display.UI.InGame {
 			bridge.Init(sim);
 			sim.InitEvents();
 
+			sim.towerManager.CreateTower(sim.model.towers[0], sim.map.areas[0].id, new(2, 2));
+		
 			StartCoroutine(GameCycle());
 		}
 

@@ -56,8 +56,8 @@ namespace Anotode.Simul.Enemies {
 				enemies = enemies.Where(e => filter(e));
 			}
 			enemies = targetType switch {
-				TargetType.First => enemies.OrderByDescending(e => e.distanceTraveled),
-				TargetType.Last => enemies.OrderBy(e => e.distanceTraveled),
+				TargetType.First => enemies.OrderByDescending(e => e.move.distanceTraveled),
+				TargetType.Last => enemies.OrderBy(e => e.move.distanceTraveled),
 				TargetType.Close => enemies.OrderBy(e => Vector2.Distance(e.mapPos, position)),
 				TargetType.Far => enemies.OrderByDescending(e => Vector2.Distance(e.mapPos, position)),
 				TargetType.Strong => enemies.OrderByDescending(e => (float)e.enemyModel.hp / e.enemyModel.hpMax),

@@ -2,6 +2,7 @@
 using System.Linq;
 using Anotode.Models.Map;
 using Anotode.Models.Waves;
+using Anotode.Simul.Enemies;
 using Anotode.Simul.Objects;
 using Anotode.Simul.Towers;
 using Quadnuc.Utils;
