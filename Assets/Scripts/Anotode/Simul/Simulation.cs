@@ -5,6 +5,7 @@ using Anotode.Models.Map;
 using Anotode.Models.Waves;
 using Anotode.Simul.Enemies;
 using Anotode.Simul.Level;
+using Anotode.Simul.Physics;
 using Anotode.Simul.Towers;
 using Quadnuc.Utils;
 
@@ -23,6 +24,8 @@ namespace Anotode.Simul {
 		public readonly TowerManager towerManager;
 		public readonly EnemyManager enemyManager;
 
+		public readonly CollisionChecker collisionChecker;
+
 		public event Action<int> onWaveStart; // 正式开始
 		public event Action<int> onWaveSpawnEnd; // 生成结束
 		public event Action<int> onWaveEnd; // 完全消灭
@@ -31,6 +34,7 @@ namespace Anotode.Simul {
 			timer = new();
 			towerManager = new() { sim = this };
 			enemyManager = new() { sim = this };
+			collisionChecker = new() { sim = this };
 		}
 
 		public void Init(GameModel model) {

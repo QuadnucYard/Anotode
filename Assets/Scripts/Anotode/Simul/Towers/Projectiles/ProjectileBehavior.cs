@@ -7,7 +7,8 @@ namespace Anotode.Simul.Towers.Projectiles {
 		public Projectile projectile;
 
 		public Action<Enemy> onCollision;
-		//public Action onDepleted;
+		public Action onDepleted;
+		public Func<bool> canBeDepleted = () => true;
 		public Action onExpired;
 		public Action<Target> setTarget;
 		public Func<Enemy, bool> filterCollision;

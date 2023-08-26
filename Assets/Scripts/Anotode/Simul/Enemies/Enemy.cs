@@ -64,6 +64,9 @@ namespace Anotode.Simul {
 			_isTransferring = false;
 			_innatePathOffset = UnityEngine.Random.Range(-0.2f, 0.2f);
 
+			enemyModel.hp = enemyModel.hpMax;
+			dead = false;
+
 			// Create view
 			controller = new();
 
@@ -188,13 +191,21 @@ namespace Anotode.Simul {
 
 		private void Invade() {
 			_path = null;
-			dead = true;
 			Destroy();
 		}
 
 		private void Destroy() {
 			//controller.OnDestroy();
+			//this.sim.map.RemoveEnemy(this);
+			dead = true;
 			displayNode.Destroy();
+		}
+
+		public void Damage(DamagePayload payload) {
+			enemyModel.hp -= payload.amount;
+			if (enemyModel.hp <= 0) {
+				Destroy();
+			}
 		}
 
 	}

@@ -48,6 +48,14 @@ namespace Anotode.Simul.Level {
 			return areas.LastOrDefault(a => a.ContainsMapPoint(mapPos));
 		}
 
+		public void AddEnemy(Enemy enemy) {
+			areaEnemies[enemy.areaIdIn].Add(enemy);
+		}
+
+		public void RemoveEnemy(Enemy enemy) {
+			areaEnemies[enemy.areaIdIn].Remove(enemy);
+		}
+
 		public struct PositionInArea {
 			public TiledArea area;
 			public Vector2Int pos;

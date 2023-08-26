@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Anotode.Models.Towers.Projectiles;
 using Anotode.Simul.Objects;
 using Anotode.Simul.Physics;
 using Anotode.Simul.Towers.Weapons;
+using Quadnuc.Utils;
 using Vector3 = UnityEngine.Vector3;
 
 namespace Anotode.Simul.Towers.Projectiles {
@@ -34,10 +36,16 @@ namespace Anotode.Simul.Towers.Projectiles {
 			projectileBehaviors.ForEach(t => t.projectile = this);
 			emittedBy = weapon.attack.tower;
 			lifespan = 0;
+			canCollideWithEnemies = true;
+
 			displayNode = new("Projectile");
 			displayNode.Create();
 			process += () => {
 				ProcessBehaviors(projectileBehaviors);
+				// 暂时做法是每帧检查一次
+				if (canCollideWithEnemies) {
+					sim.collisionChecker.CheckHit(this);
+				}
 			};
 			process += displayNode.Update;
 			emittedBy.process += process;
@@ -52,12 +60,35 @@ namespace Anotode.Simul.Towers.Projectiles {
 			emittedBy.process -= process;
 		}
 
+		public void Deplete() {
+			projectileBehaviors.ForEach(t => t.onDepleted?.Invoke());
+			OnDestroy();
+		}
+
 		public void Expire() {
 			OnDestroy();
 		}
-		
-		//public void 
-		// 这边有几个碰撞的
+
+		public void CollideEnemies(IEnumerable<Enemy> enemies) {
+			enemies.ForEach(CollideEnemy);
+			// Check deplete
+			if (projectileBehaviors.All(t => t.canBeDepleted())) {
+				Deplete();
+			}
+		}
+
+		public void CollideEnemy(Enemy enemy) {
+			projectileBehaviors.ForEach(t => t.onCollision?.Invoke(enemy));
+		}
+
+		public void CollideBlocker() { }
+
+		public bool IsCollisionValid(Enemy enemy) {
+			float r = projectileModel.radius;
+			return (enemy.mapPos.Vec3() - this.position).sqrMagnitude < r * r;
+		}
+
+		public bool FilterEnemy(Enemy enemy) { return true; }
 
 	}
 }

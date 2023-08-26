@@ -62,5 +62,11 @@ namespace Quadnuc.Utils {
 
 		public static Vector3 Neg(this Vector3 vec)
 			=> -vec;
+
+		public static Vector3 Vec3(this Vector2 vec)
+			=> vec;
+
+		public static Vector2 Vec2(this Vector3 vec)
+			=> vec;
 	}
 }

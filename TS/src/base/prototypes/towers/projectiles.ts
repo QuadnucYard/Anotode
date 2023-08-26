@@ -1,10 +1,10 @@
 import { BehaviorProxy } from "../../../core/adapter";
+import { def } from "../../../core/def";
 import { defineSprite } from "../../../core/prototypes/utils";
 
 import ue = CS.UnityEngine;
-import { def } from "../../../core/def";
 
-const { GameTimer } = CS.Anotode.Simul;
+const { GameTimer, DamagePayload } = CS.Anotode.Simul;
 
 type ProjectileBehavior = CS.Anotode.Simul.Towers.Projectiles.ProjectileBehavior;
 
@@ -32,6 +32,24 @@ class TravelStraight extends BehaviorProxy<TravelStraightModel, ProjectileBehavi
   }
 }
 
+interface GuidedTravelModel extends BehaviorModel {}
+
+class GuidedTravel extends BehaviorProxy<GuidedTravelModel, ProjectileBehavior> {
+  constructor(bindTo: ProjectileBehavior, modelToUse: BehaviorModel) {
+    super(bindTo, modelToUse);
+    this.bindTo.process = () => this.process();
+  }
+
+  process() {
+    const proj = this.bindTo.projectile;
+    if (proj.target.enemy.dead) {
+      return;
+    }
+    proj.direction = proj.target.enemy.mapPos.Vec3().Sub(proj.position).normalized;
+    // TODO 转弯限制
+  }
+}
+
 interface DamageModel extends BehaviorModel {
   damage: number;
 }
@@ -39,21 +57,28 @@ interface DamageModel extends BehaviorModel {
 class Damage extends BehaviorProxy<DamageModel, ProjectileBehavior> {
   constructor(bindTo: ProjectileBehavior, modelToUse: DamageModel) {
     super(bindTo, modelToUse);
-    bindTo.onCollision;
+    bindTo.onCollision = enemy => {
+      enemy.Damage(new DamagePayload(this.model.damage, this.bindTo.projectile));
+    };
   }
+}
+
+interface BurnColdAttachModel extends BehaviorModel {
+  value: number;
 }
 
 export const basicProjectile: ProjectileData = {
   id: "basic-projectile",
   sprite: defineSprite("", 64),
-  radius: 0.01,
+  radius: 0.1,
   ignoreBlockers: false,
   usePointCollisionWithEnemies: false,
   scale: 1,
   behaviors: [
+    def<GuidedTravelModel>({ $impl: GuidedTravel }),
     def<TravelStraightModel>({
       $impl: TravelStraight,
-      speed: 10,
+      speed: 5,
       lifespan: 1,
     }),
     def<DamageModel>({
