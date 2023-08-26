@@ -1,8 +1,10 @@
 ﻿using System;
 using Anotode.Models.Map;
+using Quadnuc.Utils;
 using UnityEngine;
 
-namespace Anotode.Models {
+namespace Anotode.Models
+{
 
 	[Serializable]
 	public class EnemyModel : Model {
@@ -15,12 +17,12 @@ namespace Anotode.Models {
 		public int charmSelf;
 		public float speed;
 		public int population;
-		public float hpFactor;
+		public Quadratic hpFactor;
 		public TilePassFlag passFlag;
 
 		private float _level;
 		public int hp;
-		public int hpMax; //应该是根据等级算的
+		public int hpMax { get; private set; }
 		public float hpRate;
 
 		//public Vector3 pos; // 暂时当它是全局坐标
@@ -37,7 +39,7 @@ namespace Anotode.Models {
 
 		public void RefreshLevel() {
 			// 血量系数只用一个好了
-			//this.hpMax = Mathf.Max(1, Mathf.RoundToInt(this.monsterData.getHpMax(m_level) * this.hpRate));
+			hpMax = Mathf.Max(1, Mathf.RoundToInt(hpFactor.Eval(_level) * hpRate));
 		}
 
 		public override Model Clone() {

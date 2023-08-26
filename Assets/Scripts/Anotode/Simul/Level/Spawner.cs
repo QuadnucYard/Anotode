@@ -8,6 +8,7 @@ using Anotode.Simul.Enemies;
 using Anotode.Simul.Objects;
 using Quadnuc.Utils;
 using Vector2 = UnityEngine.Vector2;
+using Mathf = UnityEngine.Mathf;
 
 namespace Anotode.Simul.Level {
 	public class Spawner : Simulatable, IProcessable {
@@ -42,6 +43,8 @@ namespace Anotode.Simul.Level {
 			// TODO 设置生成的area
 			var area = sim.map.mainArea;
 			var model = (EnemyModel)_spawnList.Pop().Clone();
+			model.hpRate = 1.0f;
+			model.level = Mathf.Sqrt(levelModel.hardnessA * _nextSpawnIndex + levelModel.hardnessB);
 			model.spawnIndex = _nextSpawnIndex++;
 			Enemy enemy = new(model) { sim = sim, areaIn = area };
 			enemy.Init();

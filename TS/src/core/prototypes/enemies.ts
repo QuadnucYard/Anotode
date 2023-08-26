@@ -7,6 +7,7 @@ interface EnemyData {
   charm: number;
   charmSelf: number;
   invasionDamage: number;
+  hpFactor: number;
   passFlag: CS.Anotode.Models.Map.TilePassFlag;
   behaviors: any[];
 }

@@ -22,7 +22,7 @@ namespace Anotode.Data.Enemies {
 			population = population,
 			charm = charm,
 			charmSelf = charmSelf,
-			hpFactor = hpFactor,
+			hpFactor = new() { a = hpFactor * 0.12f, b = hpFactor * 0.5f, c = hpFactor },
 			invasionDamage = invasionDamage,
 			passFlag = passFlag,
 		};

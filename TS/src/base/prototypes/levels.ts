@@ -18,7 +18,7 @@ const data: LevelData[] = [
     id: "level-0",
     mapId: "map-0-0-0",
     hardnessA: 1.0,
-    hardnessB: 80.0,
+    hardnessB: 10.0,
     spawnInterval: 0.2,
     splitRule: 2,
     enemyGroup: {
